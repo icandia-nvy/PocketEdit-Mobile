@@ -4,7 +4,7 @@
 
 Written purely in HTML, CSS, and JavaScript, **PocketEdit** runs directly in your web browser on PC, Mac, Android, and iOS devices. 
 
-![screenshot](img/gui.jpg)
+![screenshot](img/gui.png)
 
 ---
 
