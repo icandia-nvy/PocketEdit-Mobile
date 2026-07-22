@@ -393,36 +393,61 @@
 
         .effect-controls > .control-section:first-child {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px 20px;
-            padding: 12px 20px;
+            gap: 10px;
+            padding: 12px 18px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid #444;
             border-radius: 8px;
             box-shadow: inset 0 1px 2px rgba(255,255,255,0.05);
             flex: 0 0 auto;
+            text-align: center;
         }
 
-        .effect-controls > .control-section:first-child h4 {
-            margin-bottom: 0;
-            margin-right: auto;
-            font-size: 13px;
+        .effect-controls > .control-section:first-child h4.module-title {
+            margin: 0;
+            font-size: 14px;
+            font-weight: bold;
             color: var(--accent-color, #ff6b35);
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-align: center;
         }
 
-        .effect-controls > .control-section:first-child .control-row {
-            margin-bottom: 0;
+        .top-header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px 24px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .top-header-left {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .top-header-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
-            width: auto;
-            flex: 0 1 auto;
         }
 
-        .effect-controls > .control-section:first-child .dropdown-select {
-            min-width: 150px;
+        .top-header-section .inline-control {
+            margin-bottom: 0;
             width: auto;
-            flex: 1;
+            gap: 10px;
+        }
+
+        .top-header-right .dropdown-select {
+            min-width: 160px;
+            max-width: 280px;
         }
 
         .control-section {
@@ -1618,135 +1643,187 @@
 
             <div class="effects-panel">
                 <div class="effect-controls" id="module-controls-0">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-0"></div>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-0"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-0"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-1">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-1"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-1"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-1"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-1"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-1"></div>
                 </div>
 
                  <div class="effect-controls" id="module-controls-6">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-6"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-6"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-6"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-6"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-6"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-2">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-2"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-2"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-2"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-2"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-2"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-3">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-3"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Clone Mode</div>
-                            <div class="toggle-switch" id="amp-clone-mode"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Model</div>
-                            <select class="dropdown-select" id="module-type-3"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-3"></div>
+                                </div>
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Clone Mode</div>
+                                    <div class="toggle-switch" id="amp-clone-mode"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Model</div>
+                                    <select class="dropdown-select" id="module-type-3"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-3"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-4">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-4"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Cabinet</div>
-                            <select class="dropdown-select" id="module-type-4"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-4"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Cabinet</div>
+                                    <select class="dropdown-select" id="module-type-4"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                      <div class="control-section" id="module-params-4"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-5">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-5"></div>
-                        </div>
-                         <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-5"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-5"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-5"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-5"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-7">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-7"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-7"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-7"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-7"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-7"></div>
                 </div>
 
                 <div class="effect-controls" id="module-controls-8">
-                    <div class="control-section">
+                    <div class="control-section top-header-section">
                         <h4 class="module-title">...</h4>
-                        <div class="control-row">
-                            <div class="control-label">Enable</div>
-                            <div class="toggle-switch" id="module-enable-8"></div>
-                        </div>
-                        <div class="control-row">
-                            <div class="control-label">Type</div>
-                            <select class="dropdown-select" id="module-type-8"></select>
+                        <div class="top-header-content">
+                            <div class="top-header-left">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Enable</div>
+                                    <div class="toggle-switch" id="module-enable-8"></div>
+                                </div>
+                            </div>
+                            <div class="top-header-right">
+                                <div class="control-row inline-control">
+                                    <div class="control-label">Type</div>
+                                    <select class="dropdown-select" id="module-type-8"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="control-section" id="module-params-8"></div>
