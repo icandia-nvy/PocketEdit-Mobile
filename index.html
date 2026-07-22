@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pocket Edit</title>
     <style>
+        :root {
+            --accent-color: #ff6b35;
+            --accent-color-secondary: #f7931e;
+            --accent-color-dark: #d9531e;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +41,7 @@
 
         .sidebar-header {
             padding: 15px;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            background: linear-gradient(90deg, var(--accent-color, #ff6b35), var(--accent-color-secondary, #f7931e));
             color: white;
             font-weight: bold;
             text-align: center;
@@ -129,9 +135,9 @@
         }
 
         .patch-tab-btn.active {
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
             background: #2a2a2a;
-            border-bottom-color: #ff6b35;
+            border-bottom-color: var(--accent-color, #ff6b35);
         }
 
         .patch-search-container {
@@ -208,7 +214,7 @@
         .patch-name {
             font-size: 16px;
             font-weight: bold;
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
         }
 
         .patch-number {
@@ -238,18 +244,20 @@
         }
 
         .chain-module {
-            width: 80px;
-            height: 80px;
+            width: 88px;
+            height: 106px;
             background: linear-gradient(145deg, #404040, #303030);
             border: 2px solid #555;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
+            padding: 24px 4px 6px 4px;
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .chain-module:hover {
@@ -258,7 +266,7 @@
         }
 
         .chain-module.active {
-            border-color: #ff6b35;
+            border-color: var(--accent-color, #ff6b35);
             box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
         }
 
@@ -307,36 +315,30 @@
 
         .module-status {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #333;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 20px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            background: #252525;
             cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        /* for larger clickable area */
-        .module-status::before {
-            content: '';
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            bottom: -6px;
-            left: -6px;
+            transition: background-color 0.15s ease, box-shadow 0.15s ease;
+            z-index: 2;
         }
 
         .module-status:hover {
-            box-shadow: 0 0 6px rgba(255,255,255,0.3);
+            box-shadow: 0 2px 6px rgba(255,255,255,0.4);
         }
 
         .module-status.on {
             background: #44ff44;
+            box-shadow: 0 0 10px rgba(68,255,68,0.8);
         }
 
         .module-status.on:hover {
-            box-shadow: 0 0 8px rgba(68,255,68,0.7);
+            box-shadow: 0 0 12px rgba(68,255,68,1);
         }
 
         .chain-connector {
@@ -357,21 +359,24 @@
 
         /* Effects Panel */
         .effects-panel {
-            background: linear-gradient(180deg, #353535, #2a2a2a);
-            padding: 20px;
+            background: linear-gradient(180deg, #353535, #222222);
+            padding: 18px 24px;
             flex: 1;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
         }
 
         .effect-description {
             font-size: 12px;
-            color: #aaa;
-            margin-bottom: 20px;
+            color: #bbb;
+            margin-bottom: 12px;
             line-height: 1.5;
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-            border-radius: 4px;
-            border-left: 3px solid #ff6b35;
+            background: rgba(0,0,0,0.25);
+            padding: 10px 14px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-color, #ff6b35);
         }
 
         .effect-controls {
@@ -379,24 +384,76 @@
         }
 
         .effect-controls.active {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .effect-controls > .control-section:first-child {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #444;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.05);
+            flex: 0 0 auto;
+        }
+
+        .effect-controls > .control-section:first-child h4 {
+            margin-bottom: 0;
+            margin-right: auto;
+            font-size: 13px;
+            color: var(--accent-color, #ff6b35);
+            letter-spacing: 0.5px;
+        }
+
+        .effect-controls > .control-section:first-child .control-row {
+            margin-bottom: 0;
+            gap: 10px;
+            width: auto;
+            flex: 0 1 auto;
+        }
+
+        .effect-controls > .control-section:first-child .dropdown-select {
+            min-width: 150px;
+            width: auto;
+            flex: 1;
         }
 
         .control-section {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid #444;
-            border-radius: 6px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 18px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .control-section h4 {
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
             font-size: 12px;
             text-transform: uppercase;
             margin-bottom: 15px;
             letter-spacing: 0.5px;
+        }
+
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 12px 18px;
+            width: 100%;
+            margin-top: 4px;
+            flex: 1;
+            align-content: start;
         }
 
         .control-row {
@@ -404,10 +461,30 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 15px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        .control-row.param-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .control-row.param-card:hover {
+            border-color: rgba(255, 107, 53, 0.35);
+            background: rgba(0, 0, 0, 0.35);
         }
 
         .control-label {
-            min-width: 60px;
+            min-width: 65px;
+            flex-shrink: 0;
             font-size: 11px;
             color: #ccc;
             text-transform: uppercase;
@@ -420,27 +497,28 @@
             border-radius: 10px;
             position: relative;
             cursor: pointer;
+            flex-shrink: 0;
             transition: background-color 0.2s ease;
         }
 
         .toggle-switch.on {
-            background: #ff6b35;
+            background: var(--accent-color, #ff6b35);
         }
 
         .toggle-switch::after {
             content: '';
             position: absolute;
             top: 2px;
-            left: 2px;
-            width: 16px;
+            left: 3px;
+            width: 8px;
             height: 16px;
             background: white;
-            border-radius: 50%;
+            border-radius: 3px;
             transition: transform 0.2s ease;
         }
 
         .toggle-switch.on::after {
-            transform: translateX(20px);
+            transform: translateX(26px);
         }
 
         .toggle-switch.locked {
@@ -453,16 +531,21 @@
             border: 1px solid #555;
             border-radius: 4px;
             color: #e0e0e0;
-            padding: 5px 10px;
+            padding: 6px 10px;
             font-size: 11px;
             cursor: pointer;
             width: 100%;
+            flex: 1;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         .slider-container {
             display: flex;
             align-items: center;
             width: 100%;
+            flex: 1;
+            min-width: 0;
             gap: 10px;
         }
 
@@ -471,7 +554,7 @@
             appearance: none;
             width: 100%;
             height: 8px;
-            background: linear-gradient(to right, #ff6b35 var(--progress, 0%), #2a2a2a var(--progress, 0%));
+            background: linear-gradient(to right, var(--accent-color, #ff6b35) var(--progress, 0%), #2a2a2a var(--progress, 0%));
             outline: none;
             opacity: 0.9;
             transition: opacity .2s;
@@ -489,7 +572,7 @@
             appearance: none;
             width: 16px;
             height: 16px;
-            background: #ff6b35;
+            background: var(--accent-color, #ff6b35);
             cursor: pointer;
             border-radius: 50%;
         }
@@ -497,7 +580,7 @@
         .slider::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background: #ff6b35;
+            background: var(--accent-color, #ff6b35);
             cursor: pointer;
             border-radius: 50%;
         }
@@ -517,7 +600,7 @@
             font-size: 11px;
             color: #e0e0e0;
             background: #1e1e1e;
-            border: 1px solid #ff6b35;
+            border: 1px solid var(--accent-color, #ff6b35);
             border-radius: 3px;
             text-align: right;
             padding: 1px 3px;
@@ -706,7 +789,7 @@
             background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
             border: 1px solid #444;
             border-radius: 6px;
-            z-index: 1002;
+            z-index: 100000;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             display: none; /* Hidden by default */
@@ -714,6 +797,37 @@
 
         .advanced-settings-panel.visible {
             display: block; /* Shown when this class is added */
+        }
+
+        /* ⚙️ Advanced Settings Slide-Over Drawer (Matching Patches Sidebar) */
+        #advancedSettingsPanel {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            width: 310px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            max-height: 100vh !important;
+            background: #1c1c1c !important;
+            z-index: 9000 !important;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.85) !important;
+            border-left: 2px solid var(--accent-color, #ff6b35) !important;
+            border-right: none !important;
+            border-top: none !important;
+            border-bottom: none !important;
+            border-radius: 0 !important;
+            transform: translateX(100%) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            opacity: 1 !important;
+            overflow-y: auto !important;
+            padding: 20px 18px 80px 18px !important;
+            display: block !important;
+            box-sizing: border-box !important;
+        }
+
+        #advancedSettingsPanel.visible {
+            transform: translateX(0) !important;
         }
 
         .advanced-settings-panel h4 {
@@ -725,14 +839,45 @@
         }
 
         .module-icon {
-            margin-top: 4px;
-            margin-bottom: 4px; /* Adds a little space between the icon and the text */
+            max-width: 58px;
+            max-height: 44px;
+            width: auto;
+            height: auto;
+            margin-top: 2px;
+            margin-bottom: 4px;
         }
 
         .patch-items-container.locked {
             opacity: 0.5;
             pointer-events: none;
             cursor: wait;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 12px;
+            color: #ddd;
+            border-bottom: 1px dashed #3a3a3a;
+        }
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+        .key-badge {
+            background: #444;
+            border: 1px solid #666;
+            border-bottom-color: #888;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-family: Consolas, Monaco, monospace;
+            font-weight: bold;
+            color: #ff6b35;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.4);
+            margin-left: 2px;
+            display: inline-block;
         }
 
         .debug-buttons-panel {
@@ -780,7 +925,7 @@
             background-color: transparent;
             border: none;
             /* Color updated to match the slider's active color */
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
             font-size: 1.5em;
             font-weight: 700;
             font-family: "Courier New", Courier, monospace;
@@ -833,14 +978,14 @@
         /* "TAP" button active (pressed) state */
         .tap-button:active {
             /* Updated to the primary slider color */
-            background-color: #ff6b35;
+            background-color: var(--accent-color, #ff6b35);
             transform: scale(0.98);
         }
 
         /* Visual indicator for the BPM beat */
        .tap-button.beat-flash {
             /* The text will flash to the active orange color */
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
         }
 
         /* Container for the note division buttons (1/4, 1/8, etc.) */
@@ -867,10 +1012,10 @@
         /* Active note division button styling */
         .note-btn.active {
             /* Updated to the primary slider color */
-            background-color: #ff6b35;
+            background-color: var(--accent-color, #ff6b35);
             color: #fff;
             /* A slightly brighter orange for the border */
-            border-color: #ff6b35;
+            border-color: var(--accent-color, #ff6b35);
             font-weight: bold;
         }
 
@@ -909,13 +1054,13 @@
         }
 
         .usb-device-pair.selected {
-            border-color: #ff6b35;
+            border-color: var(--accent-color, #ff6b35);
             background: rgba(255, 107, 53, 0.1);
         }
 
         .usb-device-pair-title {
             font-weight: bold;
-            color: #ff6b35;
+            color: var(--accent-color, #ff6b35);
             margin-bottom: 6px;
             font-size: 12px;
         }
@@ -942,9 +1087,407 @@
         border-radius: 4px;
         transition: background-color 0.1s ease;
     }
+
+    /* --- MOBILE RESPONSIVE LAYOUT (<= 768px) --- */
+    .mobile-sidebar-toggle-btn {
+        display: none;
+        background: linear-gradient(145deg, var(--accent-color, #ff6b35), var(--accent-color-dark, #e05520));
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        align-items: center;
+        gap: 6px;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+        .mobile-sidebar-toggle-btn {
+            display: inline-flex;
+        }
+
+        .main-container {
+            flex-direction: column;
+            height: auto;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 290px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            max-height: 100vh !important;
+            background: #1c1c1c !important;
+            z-index: 9000 !important;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.85);
+            border-right: 2px solid var(--accent-color, #ff6b35) !important;
+            border-bottom: none !important;
+            transform: translateX(-100%) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            opacity: 1 !important;
+            overflow-y: auto !important;
+            padding: 12px 10px 80px 10px !important;
+            display: block !important;
+            box-sizing: border-box !important;
+        }
+
+        .sidebar.open-mobile {
+            transform: translateX(0) !important;
+        }
+
+        .main-content {
+            width: 100% !important;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .signal-chain {
+            padding: 4px 0;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid #333;
+        }
+
+        .chain-flow {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            overflow-y: hidden;
+            padding: 8px 12px;
+            gap: 6px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chain-flow::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .chain-flow::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+        }
+
+        .chain-flow::-webkit-scrollbar-thumb {
+            background: var(--accent-color, #ff6b35);
+            border-radius: 2px;
+        }
+
+        .chain-module {
+            flex-shrink: 0 !important;
+            width: 74px !important;
+            height: 92px !important;
+            padding: 18px 2px 4px 2px !important;
+        }
+
+        .chain-module .module-name {
+            font-size: 11px !important;
+        }
+
+        .chain-module .module-type {
+            font-size: 9px !important;
+        }
+
+        .chain-connector {
+            flex-shrink: 0 !important;
+            width: 14px !important;
+        }
+
+        #fixed-chain-block {
+            flex-shrink: 0 !important;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 6px;
+            background: rgba(255, 107, 53, 0.08);
+            border: 1.5px dashed var(--accent-color, #ff6b35);
+            border-radius: 10px;
+        }
+
+        .effects-panel {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .params-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .top-bar {
+            padding: 0 10px;
+            gap: 6px;
+        }
+
+        .patch-info {
+            gap: 6px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .patch-name {
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .global-volume-control {
+            display: none;
+        }
+    }
+
+    /* ⚡ QUICK ACCESS BAR (MOBILE LIVE PERFORMANCE) */
+    .quick-access-bar {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 48px;
+        background: linear-gradient(180deg, #2c2c2c, #161616);
+        border-top: 2px solid var(--accent-color, #ff6b35);
+        z-index: 9999;
+        align-items: center;
+        justify-content: space-around;
+        padding: 4px 6px;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.7);
+    }
+
+    .quick-btn {
+        flex: 1;
+        height: 38px;
+        margin: 0 3px;
+        background: linear-gradient(145deg, #444, #333);
+        border: 1px solid #555;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 11px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .quick-btn:active {
+        transform: scale(0.95);
+        background: var(--accent-color, #ff6b35);
+    }
+
+    .quick-patches-btn {
+        background: linear-gradient(145deg, var(--accent-color, #ff6b35), var(--accent-color-dark, #d9531e));
+        border-color: var(--accent-color, #ff8555);
+    }
+
+    .quick-bypass-btn.bypassed {
+        background: linear-gradient(145deg, #cc2222, #990000);
+        border-color: #ff4444;
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .quick-access-bar {
+            display: flex;
+        }
+
+        body {
+            padding-bottom: 50px;
+        }
+    }
+
+    /* 📱 LANDSCAPE MODE OPTIMIZATION (ORIENTATION: LANDSCAPE) */
+    @media (orientation: landscape) and (max-height: 550px) {
+        body {
+            padding-bottom: 48px;
+        }
+
+        .main-container {
+            flex-direction: row;
+            height: calc(100vh - 48px);
+            overflow: hidden;
+        }
+
+        .main-content {
+            width: 100% !important;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #editor-container {
+            display: flex;
+            flex-direction: row !important;
+            width: 100%;
+            height: calc(100vh - 48px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            z-index: 10;
+            background: linear-gradient(180deg, #333, #222);
+            border-bottom: 1px solid #444;
+            padding: 0 10px;
+        }
+
+        .patch-volume-container {
+            display: none;
+        }
+
+        .signal-chain {
+            width: 340px;
+            flex-shrink: 0;
+            height: 100%;
+            padding-top: 44px;
+            overflow-y: auto;
+            border-right: 1px solid #444;
+            border-bottom: none;
+            box-sizing: border-box;
+        }
+
+        .effects-panel {
+            flex: 1;
+            height: 100%;
+            padding-top: 44px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .params-grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 8px 12px;
+        }
+    }
 </style>
 </head>
 <body>
+    <!-- Reusable SVG Symbols Library -->
+    <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="8" height="8">
+                <path d="M0 0L8 8ZM8 0L0 8Z" stroke="#888888" stroke-width="0.75"/>
+            </pattern>
+        </defs>
+        <g id="svg-module-0">
+            <rect x="2" y="2" width="76" height="126" rx="10" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="40" cy="32" r="14" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="40" cy="100" r="8" fill="currentColor" stroke-width="2"/>
+            <circle cx="40" cy="100" r="9" stroke="currentColor" fill="none"/>
+            <circle cx="40" cy="100" r="12" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="8" y="54" width="64" height="70" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="40" cy="9" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </g>
+        <g id="svg-module-fx">
+            <path d="M2 10C2 5.58172 5.58172 2 10 2H70C74.4183 2 78 5.58172 78 10V120C78 124.418 74.4183 128 70 128H10C5.58172 128 2 124.418 2 120V10Z" stroke="currentColor" stroke-width="3" fill="none"/>
+            <line x1="2" y1="48" x2="78" y2="48" stroke="currentColor" stroke-width="2"/>
+            <circle cx="14" cy="24" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="31" cy="24" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="49" cy="24" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="66" cy="24" r="6" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="40" cy="100" r="8" fill="currentColor" stroke-width="2"/>
+            <circle cx="40" cy="100" r="9" stroke="currentColor" fill="none"/>
+            <circle cx="40" cy="100" r="12" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="8" y="68" width="64" height="55" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="40" cy="9" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+        </g>
+        <g id="svg-module-2">
+            <rect x="2" y="2" width="76" height="126" rx="10" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="8" y="8" width="64" height="40" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="22" cy="28" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="40" cy="28" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="58" cy="28" r="7" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <rect x="20" y="65" width="40" height="40" rx="6" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="40" cy="54" r="3" fill="currentColor"/>
+        </g>
+        <g id="svg-module-3">
+            <rect x="2" y="10" width="88" height="60" rx="8" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="10" y="48" width="72" height="18" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="23" cy="57" r="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="39" cy="57" r="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="54" cy="57" r="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <circle cx="69" cy="57" r="4" stroke="currentColor" stroke-width="2.5" fill="none"/>
+            <path d="M30 10 V4 H62 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <rect x="13" y="70" width="10" height="4" rx="2" fill="currentColor"/>
+            <rect x="69" y="70" width="10" height="4" rx="2" fill="currentColor"/>
+        </g>
+        <g id="svg-module-4">
+            <rect x="2" y="10" width="116" height="110" rx="8" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="10" y="18" width="100" height="94" rx="4" fill="url(#meshPattern)"/>
+            <rect x="10" y="18" width="100" height="94" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
+            <path d="M40 10 V4 H80 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <rect x="15" y="120" width="10" height="4" rx="2" fill="currentColor"/>
+            <rect x="95" y="120" width="10" height="4" rx="2" fill="currentColor"/>
+        </g>
+        <g id="svg-module-4-locked">
+            <rect x="2" y="10" width="116" height="110" rx="8" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="10" y="18" width="100" height="94" rx="4" fill="url(#meshPattern)"/>
+            <rect x="10" y="18" width="100" height="94" rx="4" stroke="currentColor" stroke-width="3" fill="none"/>
+            <path d="M40 10 V4 H80 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <rect x="15" y="120" width="10" height="4" rx="2" fill="currentColor"/>
+            <rect x="95" y="120" width="10" height="4" rx="2" fill="currentColor"/>
+            <circle cx="60" cy="65" r="40" stroke="currentColor" stroke-width="3" fill="none"/>
+            <line x1="30" y1="100" x2="90" y2="30" stroke="red" stroke-width="5"/>
+        </g>
+        <g id="svg-module-5">
+            <rect x="2" y="2" width="96" height="126" rx="10" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="15" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="30" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="45" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="60" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="75" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2" fill="none"/>
+            <rect x="12" y="18" width="14" height="8" rx="3" fill="currentColor"/>
+            <rect x="27" y="38" width="14" height="8" rx="3" fill="currentColor"/>
+            <rect x="42" y="55" width="14" height="8" rx="3" fill="currentColor"/>
+            <rect x="57" y="38" width="14" height="8" rx="3" fill="currentColor"/>
+            <rect x="72" y="18" width="14" height="8" rx="3" fill="currentColor"/>
+            <circle cx="50" cy="88" r="3" stroke="currentColor" fill="none"/>
+            <circle cx="50" cy="110" r="9" stroke="currentColor" fill="none"/>
+            <circle cx="50" cy="110" r="12" stroke="currentColor" stroke-width="2" fill="none"/>
+        </g>
+        <g id="svg-module-7">
+            <circle cx="50" cy="50" r="15" stroke="currentColor" stroke-width="3" fill="none"/>
+            <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.7" fill="none"/>
+            <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="2" stroke-opacity="0.4" fill="none"/>
+            <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.2" fill="none"/>
+        </g>
+        <g id="svg-module-8">
+            <rect x="15" y="35" width="50" height="50" stroke="currentColor" stroke-width="3" fill="none"/>
+            <rect x="35" y="15" width="50" height="50" stroke="currentColor" stroke-width="3" fill="none"/>
+            <line x1="15" y1="35" x2="35" y2="15" stroke="currentColor" stroke-width="3"/>
+            <line x1="65" y1="35" x2="85" y2="15" stroke="currentColor" stroke-width="3"/>
+            <line x1="15" y1="85" x2="35" y2="65" stroke="currentColor" stroke-width="3"/>
+            <line x1="65" y1="85" x2="85" y2="65" stroke="currentColor" stroke-width="3"/>
+            <path d="M43 51 L49 45 L49 56 Z" fill="currentColor"/>
+            <path d="M54 43 C 56 45, 56 55, 54 57" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <path d="M56 41 C 59 45, 59 55, 56 59" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        </g>
+    </svg>
+
     <div class="main-container">
         <div class="sidebar">
             <div class="sidebar-header">
@@ -956,8 +1499,9 @@
                     <div id="statusDot" class="status-dot"></div>
                     <span id="statusText">Disconnected</span>
                 </div>
-                <button id="connectBtn" class="btn btn-primary">Connect</button>
-                <button id="disconnectBtn" class="btn" disabled>Disconnect</button>
+                <button id="connectUsbBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, #ff6b35, #e05520);">🔌 Conectar USB (MIDI)</button>
+                <button id="connectBleBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, #0077ff, #0055cc);">📡 Conectar Bluetooth</button>
+                <button id="disconnectBtn" class="btn" disabled style="margin-bottom: 5px;">Desconectar</button>
             </div>
 
             <div class="patch-list">
@@ -976,20 +1520,14 @@
         <div class="main-content">
             <div id="editor-container" style="display: none; height: 100%; flex-direction: column; flex: 1;">
                 <div class="top-bar">
-                <div class="patch-info">
+                    <button id="mobileSidebarToggle" class="mobile-sidebar-toggle-btn" title="Show/Hide Patches & Connection">📋 Patches</button>
+                    <div class="patch-info">
                     <div class="patch-number" id="patchNumber"></div>
                     <div class="patch-name" id="patchName"></div>
                 </div>
 
                 <div style="display: flex; align-items: center;">
-                    <div class="global-volume-control">
-                        <div class="control-label">Global Vol</div>
-                        <div class="slider-container">
-                            <input type="range" min="0" max="100" value="75" class="slider" data-global-param="globalVolume">
-                            <span class="slider-value">75</span>
-                        </div>
-                    </div>
-
+                    <button id="shortcutsBtn" class="settings-btn" title="Keyboard Shortcuts (?)" style="margin-right: 6px;">⌨️</button>
                     <button id="advancedSettingsBtn" class="settings-btn">⚙️</button>
                 </div>
             </div>
@@ -1007,34 +1545,14 @@
             <div class="signal-chain">
                 <div class="chain-flow">
                     <div class="chain-module" data-module-id="0" draggable="true">
-                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="2" y="2" width="76" height="126" rx="10" stroke="currentColor" stroke-width="3"/>
-                        <circle cx="40" cy="32" r="14" stroke="currentColor" stroke-width="3"/>
-                        <circle cx="40" cy="100" r="8" fill="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="100" r="9" stroke="currentColor"/>
-                        <circle cx="40" cy="100" r="12" stroke="currentColor" stroke-width="2"/>
-                        <rect x="8" y="54" width="64" height="70" rx="4" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="9" r="4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130"><use href="#svg-module-0"/></svg>
                         <div class="module-status" id="module-status-0"></div>
                         <div class="module-name">NR</div>
                         <div class="module-type">Noise Gate</div>
                     </div>
                     <div class="chain-connector"></div>
                     <div class="chain-module" data-module-id="1" draggable="true">
-                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10C2 5.58172 5.58172 2 10 2H70C74.4183 2 78 5.58172 78 10V120C78 124.418 74.4183 128 70 128H10C5.58172 128 2 124.418 2 120V10Z" stroke="currentColor" stroke-width="3"/>
-                        <line x1="2" y1="48" x2="78" y2="48" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="14" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="31" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="49" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="66" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="40" cy="100" r="8" fill="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="100" r="9" stroke="currentColor"/>
-                        <circle cx="40" cy="100" r="12" stroke="currentColor" stroke-width="2"/>
-                        <rect x="8" y="68" width="64" height="55" rx="4" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="9" r="4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130"><use href="#svg-module-fx"/></svg>
                         <div class="module-status" id="module-status-1"></div>
                         <div class="module-name">FX1</div>
                         <div class="module-type">Please sync</div>
@@ -1043,115 +1561,43 @@
 
                     <div id="fixed-chain-block" draggable="false">
                         <div class="chain-module" data-module-id="2" data-is-fixed="true">
-                            <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="2" width="76" height="126" rx="10" stroke="currentColor" stroke-width="3"/>
-                            <rect x="8" y="8" width="64" height="40" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="22" cy="28" r="7" stroke="currentColor" stroke-width="2.5"/>
-                            <circle cx="40" cy="28" r="7" stroke="currentColor" stroke-width="2.5"/>
-                            <circle cx="58" cy="28" r="7" stroke="currentColor" stroke-width="2.5"/>
-                            <rect x="20" y="65" width="40" height="40" rx="6" stroke="currentColor" stroke-width="3"/>
-                            <circle cx="40" cy="54" r="3" fill="currentColor"/>
-                            </svg>
+                            <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130"><use href="#svg-module-2"/></svg>
                             <div class="module-status" id="module-status-2"></div><div class="module-name">DRV</div><div class="module-type">Please sync</div>
                         </div>
                         <div class="chain-connector"></div>
                         <div class="chain-module" data-module-id="3" data-is-fixed="true">
-                            <svg class="module-icon" width="92" height="80" viewBox="0 0 92 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <rect x="2" y="10" width="88" height="60" rx="8" stroke="currentColor" stroke-width="3"/>
-                                  <rect x="10" y="48" width="72" height="18" rx="4" stroke="currentColor" stroke-width="3"/>
-                                  <circle cx="23" cy="57" r="4" stroke="currentColor" stroke-width="2.5"/>
-                                  <circle cx="39" cy="57" r="4" stroke="currentColor" stroke-width="2.5"/>
-                                  <circle cx="54" cy="57" r="4" stroke="currentColor" stroke-width="2.5"/>
-                                  <circle cx="69" cy="57" r="4" stroke="currentColor" stroke-width="2.5"/>
-                                  <path d="M30 10 V4 H62 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                                  <rect x="13" y="70" width="10" height="4" rx="2" fill="currentColor"/>
-                                  <rect x="69" y="70" width="10" height="4" rx="2" fill="currentColor"/>
-                                </svg>
+                            <svg class="module-icon" width="92" height="80" viewBox="0 0 92 80"><use href="#svg-module-3"/></svg>
                             <div class="module-status" id="module-status-3"></div><div class="module-name">AMP</div><div class="module-type">Please sync</div>
                         </div>
                         <div class="chain-connector"></div>
                         <div class="chain-module" data-module-id="4" data-is-fixed="true">
-                            <svg class="module-icon" width="120" height="130" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                            <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="8" height="8">
-                            <path d="M0 0L8 8ZM8 0L0 8Z" stroke="currentColor" stroke-width="0.75"/>
-                            </pattern>
-                            </defs>
-                            <rect x="2" y="10" width="116" height="110" rx="8" stroke="currentColor" stroke-width="3"/>
-                            <rect x="10" y="18" width="100" height="94" rx="4" fill="url(#meshPattern)"/>
-                            <rect x="10" y="18" width="100" height="94" rx="4" stroke="currentColor" stroke-width="3"/>
-                            <path d="M40 10 V4 H80 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                            <rect x="15" y="120" width="10" height="4" rx="2" fill="currentColor"/>
-                            <rect x="95" y="120" width="10" height="4" rx="2" fill="currentColor"/>
-                            </svg>
+                            <svg class="module-icon" width="120" height="130" viewBox="0 0 120 130"><use href="#svg-module-4"/></svg>
                             <div class="module-status" id="module-status-4"></div><div class="module-name">IR</div><div class="module-type">Please sync</div>
                         </div>
                         <div class="chain-connector"></div>
                         <div class="chain-module" data-module-id="5" data-is-fixed="true">
-                            <svg class="module-icon" width="100" height="130" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="2" width="96" height="126" rx="10" stroke="currentColor" stroke-width="3"/>
-                            <rect x="15" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <rect x="30" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <rect x="45" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <rect x="60" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <rect x="75" y="12" width="8" height="60" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <rect x="12" y="18" width="14" height="8" rx="3" fill="currentColor"/>
-                            <rect x="27" y="38" width="14" height="8" rx="3" fill="currentColor"/>
-                            <rect x="42" y="55" width="14" height="8" rx="3" fill="currentColor"/>
-                            <rect x="57" y="38" width="14" height="8" rx="3" fill="currentColor"/>
-                            <rect x="72" y="18" width="14" height="8" rx="3" fill="currentColor"/>
-                            <circle cx="50" cy="88" r="3" stroke="currentColor"/>
-                            <circle cx="50" cy="110" r="9" stroke="currentColor"/>
-                            <circle cx="50" cy="110" r="12" stroke="currentColor" stroke-width="2"/>
-                            </svg>
+                            <svg class="module-icon" width="100" height="130" viewBox="0 0 100 130"><use href="#svg-module-5"/></svg>
                             <div class="module-status" id="module-status-5"></div><div class="module-name">EQ</div><div class="module-type">Please sync</div>
                         </div>
                     </div>
                     <div class="chain-connector"></div>
 
                     <div class="chain-module" data-module-id="6" draggable="true">
-                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 10C2 5.58172 5.58172 2 10 2H70C74.4183 2 78 5.58172 78 10V120C78 124.418 74.4183 128 70 128H10C5.58172 128 2 124.418 2 120V10Z" stroke="currentColor" stroke-width="3"/>
-                        <line x1="2" y1="48" x2="78" y2="48" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="14" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="31" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="49" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="66" cy="24" r="6" stroke="currentColor" stroke-width="2.5"/>
-                        <circle cx="40" cy="100" r="8" fill="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="100" r="9" stroke="currentColor"/>
-                        <circle cx="40" cy="100" r="12" stroke="currentColor" stroke-width="2"/>
-                        <rect x="8" y="68" width="64" height="55" rx="4" stroke="currentColor" stroke-width="2"/>
-                        <circle cx="40" cy="9" r="4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
+                        <svg class="module-icon" width="80" height="130" viewBox="0 0 80 130"><use href="#svg-module-fx"/></svg>
                         <div class="module-status" id="module-status-6"></div>
                         <div class="module-name">FX2</div>
                         <div class="module-type">Please sync</div>
                     </div>
                     <div class="chain-connector"></div>
                     <div class="chain-module" data-module-id="7" draggable="true">
-                        <svg class="module-icon" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="15" stroke="currentColor" stroke-width="3"/>
-                        <circle cx="50" cy="50" r="25" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.7"/>
-                        <circle cx="50" cy="50" r="35" stroke="currentColor" stroke-width="2" stroke-opacity="0.4"/>
-                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.2"/>
-                        </svg>
+                        <svg class="module-icon" width="100" height="100" viewBox="0 0 100 100"><use href="#svg-module-7"/></svg>
                         <div class="module-status" id="module-status-7"></div>
                         <div class="module-name">DLY</div>
                         <div class="module-type">Please sync</div>
                     </div>
                     <div class="chain-connector"></div>
                     <div class="chain-module" data-module-id="8" draggable="true">
-                        <svg class="module-icon" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="15" y="35" width="50" height="50" stroke="currentColor" stroke-width="3"/>
-                        <rect x="35" y="15" width="50" height="50" stroke="currentColor" stroke-width="3"/>
-                        <line x1="15" y1="35" x2="35" y2="15" stroke="currentColor" stroke-width="3"/>
-                        <line x1="65" y1="35" x2="85" y2="15" stroke="currentColor" stroke-width="3"/>
-                        <line x1="15" y1="85" x2="35" y2="65" stroke="currentColor" stroke-width="3"/>
-                        <line x1="65" y1="85" x2="85" y2="65" stroke="currentColor" stroke-width="3"/>
-                        <path d="M43 51 L49 45 L49 56 Z" fill="currentColor"/>
-                        <path d="M54 43 C 56 45, 56 55, 54 57" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M56 41 C 59 45, 59 55, 56 59" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
+                        <svg class="module-icon" width="100" height="100" viewBox="0 0 100 100"><use href="#svg-module-8"/></svg>
                         <div class="module-status" id="module-status-8"></div>
                         <div class="module-name">RVB</div>
                         <div class="module-type">Please sync</div>
@@ -1302,44 +1748,68 @@
         </div>
     </div>
     <div id="advancedSettingsPanel" class="advanced-settings-panel">
-    <h4>Advanced Settings</h4>
-
-    <div class="control-row">
-        <div class="control-label">Input Lvl</div>
-        <div class="slider-container">
-            <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="inputLevel">
-            <span class="slider-value">0dB</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #444; padding-bottom: 10px;">
+            <h4 style="margin: 0; color: var(--accent-color, #ff6b35); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">⚙️ Advanced Settings</h4>
+            <button id="closeAdvancedSettingsBtn" class="btn" style="width: auto; padding: 2px 10px; margin: 0; font-weight: bold; background: #3a3a3a; border: 1px solid #555;">✕</button>
         </div>
-    </div>
 
-    <div class="control-row">
-        <div class="control-label">FX REC Lvl</div>
-        <div class="slider-container">
-            <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="fxRecLevel">
-            <span class="slider-value">0dB</span>
+        <div class="control-row">
+            <div class="control-label">Global Vol</div>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="75" class="slider" data-global-param="globalVolume">
+                <span class="slider-value">75</span>
+            </div>
         </div>
-    </div>
 
-    <div class="control-row">
-        <div class="control-label">BT REC Lvl</div>
-        <div class="slider-container">
-            <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="btRecLevel">
-            <span class="slider-value">0dB</span>
+        <div class="control-row">
+            <div class="control-label">Input Lvl</div>
+            <div class="slider-container">
+                <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="inputLevel">
+                <span class="slider-value">0dB</span>
+            </div>
         </div>
-    </div>
 
-    <div class="control-row">
-        <div class="control-label">Mon Lvl</div>
-        <div class="slider-container">
-            <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="monitorLevel">
-            <span class="slider-value">0dB</span>
+        <div class="control-row">
+            <div class="control-label">FX REC Lvl</div>
+            <div class="slider-container">
+                <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="fxRecLevel">
+                <span class="slider-value">0dB</span>
+            </div>
         </div>
+
+        <div class="control-row">
+            <div class="control-label">BT REC Lvl</div>
+            <div class="slider-container">
+                <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="btRecLevel">
+                <span class="slider-value">0dB</span>
+            </div>
+        </div>
+
+        <div class="control-row">
+            <div class="control-label">Mon Lvl</div>
+            <div class="slider-container">
+                <input type="range" min="-20" max="20" value="0" step="1" class="slider" data-global-param="monitorLevel">
+                <span class="slider-value">0dB</span>
+            </div>
+        </div>
+
+        <!-- 🎨 RGB Accent Theme Color Picker -->
+        <div class="control-row" style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 15px;">
+            <div class="control-label" style="font-weight: bold; color: var(--accent-color, #ff6b35);">Theme Color</div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="color" id="themeColorPicker" value="#ff6b35" style="width: 38px; height: 28px; border: 1px solid #555; border-radius: 4px; cursor: pointer; background: transparent; padding: 0;">
+                <span id="themeColorVal" style="font-size: 11px; font-family: monospace; color: #aaa; min-width: 55px;">#FF6B35</span>
+                <button id="resetThemeColorBtn" class="btn" style="width: auto; padding: 2px 8px; font-size: 10px; margin: 0; background: #333; border: 1px solid #555; color: #eee;" title="Reset to default orange">Reset</button>
+            </div>
+        </div>
+
+        <button id="savePresetBtn" class="btn" style="margin-top: 20px;">Save Current Preset</button>
+        <button id="exportPresetBtn" class="btn" style="margin-top: 10px;">Export Preset</button>
+        <button id="importPresetBtn" class="btn" style="margin-top: 10px;">Import Preset</button>
+        <input type="file" id="presetFileInput" accept=".json" style="display: none;">
+
+        <button id="fullscreenBtn" class="btn" style="margin-top: 15px; background: #333; border: 1px solid var(--accent-color, #ff6b35); color: #fff;">🖥️ Fullscreen Mode</button>
     </div>
-    <button id="savePresetBtn" class="btn" style="margin-top: 20px;">Save Current Preset</button>
-    <button id="exportPresetBtn" class="btn" style="margin-top: 10px;">Export Preset</button>
-    <button id="importPresetBtn" class="btn" style="margin-top: 10px;">Import Preset</button>
-    <input type="file" id="presetFileInput" accept=".json" style="display: none;">
-</div>
     <div class="log-toggle" id="logToggle">Show Log</div>
     <div class="log-panel" id="logPanel">
         <div class="log-header">
@@ -1376,12 +1846,30 @@
     </div>
 </div>
 
-<div id="lockingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; text-align: center; color: white; font-size: 1.2em;">
+<div id="lockingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000000; justify-content: center; align-items: center; text-align: center; color: white; font-size: 1.2em;">
     <div>
         <p>Trying to save preset...</p>
         <p style="font-size: 0.8em; color: #aaa; margin-top: 5px;">This could take up to 2 minutes!</p>
     </div>
 </div>
+
+<!-- In-App Modal Portal for Unsaved Changes (Does NOT exit fullscreen mode on mobile) -->
+<div id="unsavedChangesModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 999999; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box;">
+    <div style="width: 100%; max-width: 360px; text-align: center; background: #222; border: 2px solid #ff6b35; border-radius: 12px; padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.9);">
+        <div style="font-size: 34px; margin-bottom: 6px;">⚠️</div>
+        <h3 style="color: #ff6b35; margin-bottom: 10px; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px;">Unsaved Changes</h3>
+        <p style="color: #ddd; font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
+            Current preset has been modified and not saved.<br>Do you want to discard changes and continue?
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="cancelUnsavedChangesBtn" class="btn" style="flex: 1; background: #3a3a3a; border: 1px solid #555; color: #fff; padding: 12px 10px; font-size: 14px; cursor: pointer;">Cancel</button>
+            <button id="confirmUnsavedChangesBtn" class="btn" style="flex: 1; background: #ff6b35; border: 1px solid #ff6b35; color: #fff; font-weight: bold; padding: 12px 10px; font-size: 14px; cursor: pointer;">Discard</button>
+        </div>
+    </div>
+</div>
+
+<!-- Backdrop Overlay for Mobile Sidebar Slide-Over Drawer -->
+<div id="sidebarBackdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.65); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); z-index: 8999; opacity: 0; transition: opacity 0.3s ease; cursor: pointer;"></div>
 
 <!-- USB MIDI Device Selection Modal -->
 <div id="usbMidiModal" class="advanced-settings-panel" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 450px; display: none;">
@@ -1395,6 +1883,44 @@
     <div style="display: flex; gap: 10px; margin-top: 15px;">
         <button id="cancelUsbBtn" class="btn">Cancel (Use BLE)</button>
         <button id="confirmUsbBtn" class="btn btn-primary" disabled>Connect via USB</button>
+    </div>
+</div>
+
+<!-- Keyboard Shortcuts Modal -->
+<div id="shortcutsModal" class="advanced-settings-panel" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 460px; max-height: 85vh; overflow-y: auto; display: none; z-index: 2005; border: 1px solid #ff6b35; box-shadow: 0 10px 25px rgba(0,0,0,0.8);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #444; padding-bottom: 8px;">
+        <h4 style="margin: 0; color: #ff6b35; font-size: 14px;">⌨️ Keyboard Shortcuts</h4>
+        <button id="closeShortcutsBtn" class="btn" style="width: auto; padding: 2px 10px; margin: 0; font-weight: bold; background: #555;">✕</button>
+    </div>
+    
+    <div class="shortcuts-group">
+        <h5 style="color: #0099ff; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #333; padding-bottom: 4px;">Preset Navigation</h5>
+        <div class="shortcut-item"><span>Previous / next preset</span><div><span class="key-badge">↑</span> <span class="key-badge">↓</span> or <span class="key-badge">k</span> <span class="key-badge">j</span></div></div>
+        <div class="shortcut-item"><span>Switch Bank (User / Factory)</span><div><span class="key-badge">1</span> <span class="key-badge">2</span></div></div>
+        <div class="shortcut-item"><span>Search preset</span><div><span class="key-badge">/</span> or <span class="key-badge">Ctrl+F</span></div></div>
+    </div>
+
+    <div class="shortcuts-group" style="margin-top: 12px;">
+        <h5 style="color: #0099ff; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #333; padding-bottom: 4px;">Signal Chain & Modules</h5>
+        <div class="shortcut-item"><span>Toggle Modules 1 to 9 (in order)</span><div><span class="key-badge">q</span> <span class="key-badge">w</span> <span class="key-badge">e</span> <span class="key-badge">r</span> <span class="key-badge">t</span> <span class="key-badge">y</span> <span class="key-badge">u</span> <span class="key-badge">i</span> <span class="key-badge">o</span></div></div>
+        <div class="shortcut-item"><span>Previous / next module</span><div><span class="key-badge">←</span> <span class="key-badge">→</span> or <span class="key-badge">[</span> <span class="key-badge">]</span></div></div>
+        <div class="shortcut-item"><span>Toggle ON / Bypass selected module</span><div><span class="key-badge">b</span></div></div>
+        <div class="shortcut-item"><span>Select / Open Modules 1 to 5</span><div><span class="key-badge">Shift+Q</span> <span class="key-badge">Shift+W</span> <span class="key-badge">Shift+E</span> <span class="key-badge">Shift+R</span> <span class="key-badge">Shift+T</span></div></div>
+        <div class="shortcut-item"><span>Select / Open Modules 6 to 9</span><div><span class="key-badge">Shift+Y</span> <span class="key-badge">Shift+U</span> <span class="key-badge">Shift+I</span> <span class="key-badge">Shift+O</span></div></div>
+    </div>
+
+    <div class="shortcuts-group" style="margin-top: 12px;">
+        <h5 style="color: #0099ff; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #333; padding-bottom: 4px;">Save & Files</h5>
+        <div class="shortcut-item"><span>Save current preset</span><div><span class="key-badge">Ctrl + S</span></div></div>
+        <div class="shortcut-item"><span>Export Preset (JSON)</span><div><span class="key-badge">Ctrl + E</span></div></div>
+        <div class="shortcut-item"><span>Import Preset (JSON)</span><div><span class="key-badge">Ctrl + I</span></div></div>
+    </div>
+
+    <div class="shortcuts-group" style="margin-top: 12px;">
+        <h5 style="color: #0099ff; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #333; padding-bottom: 4px;">Performance & System</h5>
+        <div class="shortcut-item"><span>Tap Tempo</span><div><span class="key-badge">Space</span> or <span class="key-badge">t</span></div></div>
+        <div class="shortcut-item"><span>Toggle shortcuts guide</span><div><span class="key-badge">?</span> or <span class="key-badge">F1</span></div></div>
+        <div class="shortcut-item"><span>Close active modals</span><div><span class="key-badge">Esc</span></div></div>
     </div>
 </div>
 
@@ -9929,24 +10455,8 @@
                 this.lockingOverlay = null;
                 this.cloneSlotNames = Array(5).fill(null).map((_, i) => `User Profile ${i + 1}`);
                 this.irSlotNames = Array(5).fill(null).map((_, i) => `User IR ${i + 1}`);
-                this.originalIrSvg = '';
-                this.lockedIrSvg = `
-<svg class="module-icon" width="120" height="130" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <pattern id="meshPattern" patternUnits="userSpaceOnUse" width="8" height="8">
-      <path d="M0 0L8 8ZM8 0L0 8Z" stroke="currentColor" stroke-width="0.75"/>
-    </pattern>
-  </defs>
-  <rect x="2" y="10" width="116" height="110" rx="8" stroke="currentColor" stroke-width="3"/>
-  <rect x="10" y="18" width="100" height="94" rx="4" fill="url(#meshPattern)"/>
-  <rect x="10" y="18" width="100" height="94" rx="4" stroke="currentColor" stroke-width="3"/>
-  <path d="M40 10 V4 H80 V10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-  <rect x="15" y="120" width="10" height="4" rx="2" fill="currentColor"/>
-  <rect x="95" y="120" width="10" height="4" rx="2" fill="currentColor"/>
-  <circle cx="60" cy="65" r="40" stroke="currentColor" stroke-width="3" fill="none"/>
-  <line x1="30" y1="100" x2="90" y2="30" stroke="red" stroke-width="5"/>
-</svg>
-`;
+                this.originalIrSvg = '<use href="#svg-module-4"/>';
+                this.lockedIrSvg = '<use href="#svg-module-4-locked"/>';
 
                 this.ampModeFxId3 = undefined; // Stores the last selected FX ID when in Factory Mode
                 this.ampModeFxId9 = undefined; // Stores the last selected FX ID when in Clone Mode
@@ -11324,6 +11834,9 @@
                             this.updateSliderProgress(slider);
                         });
 
+                        // Intentar reconexión automática vía BLE si el dispositivo ya fue vinculado previamente
+                        this.tryAutoConnectBLE();
+
                     } catch (error) {
                         this.log(`❌ Error loading files: ${error.message}`, 'error');
                         alert(`Error loading files: ${error.message}`);
@@ -11354,8 +11867,65 @@
                 this.log('✅ Signature maps built.', 'info');
             }
 
+            initializeDOMCache() {
+                this.domCache = {
+                    patchNumber: document.getElementById('patchNumber'),
+                    patchName: document.getElementById('patchName'),
+                    chainFlowContainer: document.querySelector('.chain-flow'),
+                    fixedChainBlock: document.getElementById('fixed-chain-block'),
+                    chainTerminator: document.getElementById('chain-terminator'),
+                    ampCloneModeToggle: document.getElementById('amp-clone-mode'),
+                    presetVolumeSlider: document.querySelector('.patch-volume-module .slider'),
+                    presetVolumeDisplay: document.querySelector('.patch-volume-module .slider-value'),
+                    lockingOverlay: document.getElementById('lockingOverlay'),
+                    exportPresetBtn: document.getElementById('exportPresetBtn'),
+                    importPresetBtn: document.getElementById('importPresetBtn'),
+                    presetFileInput: document.getElementById('presetFileInput'),
+
+                    // Element cache maps for dynamic lookups
+                    modules: {},
+                    moduleEnables: {},
+                    moduleStatuses: {},
+                    globalSliders: {}
+                };
+            }
+
+            getModuleElement(moduleId) {
+                if (!this.domCache || !this.domCache.modules) return document.querySelector(`.chain-module[data-module-id="${moduleId}"]`);
+                if (!this.domCache.modules[moduleId]) {
+                    this.domCache.modules[moduleId] = document.querySelector(`.chain-module[data-module-id="${moduleId}"]`);
+                }
+                return this.domCache.modules[moduleId];
+            }
+
+            getModuleEnableToggle(moduleId) {
+                if (!this.domCache || !this.domCache.moduleEnables) return document.getElementById(`module-enable-${moduleId}`);
+                if (!this.domCache.moduleEnables[moduleId]) {
+                    this.domCache.moduleEnables[moduleId] = document.getElementById(`module-enable-${moduleId}`);
+                }
+                return this.domCache.moduleEnables[moduleId];
+            }
+
+            getModuleStatusElement(moduleId) {
+                if (!this.domCache || !this.domCache.moduleStatuses) return document.getElementById(`module-status-${moduleId}`);
+                if (!this.domCache.moduleStatuses[moduleId]) {
+                    this.domCache.moduleStatuses[moduleId] = document.getElementById(`module-status-${moduleId}`);
+                }
+                return this.domCache.moduleStatuses[moduleId];
+            }
+
+            getGlobalSlider(paramName) {
+                if (!this.domCache || !this.domCache.globalSliders) return document.querySelector(`.slider[data-global-param="${paramName}"]`);
+                if (!this.domCache.globalSliders[paramName]) {
+                    this.domCache.globalSliders[paramName] = document.querySelector(`.slider[data-global-param="${paramName}"]`);
+                }
+                return this.domCache.globalSliders[paramName];
+            }
+
             initializeUI() {
-                this.connectBtn = document.getElementById('connectBtn');
+                this.initializeDOMCache();
+                this.connectUsbBtn = document.getElementById('connectUsbBtn');
+                this.connectBleBtn = document.getElementById('connectBleBtn');
                 this.disconnectBtn = document.getElementById('disconnectBtn');
                 this.syncPresetNamesBtn = document.getElementById('syncPresetNamesBtn');
                 this.syncModulesBtn = document.getElementById('syncModulesBtn');
@@ -11389,32 +11959,242 @@
                 this.confirmUsbBtn = document.getElementById('confirmUsbBtn');
                 this.cancelUsbBtn = document.getElementById('cancelUsbBtn');
 
-                // Add a global keydown listener for the space bar to control tap tempo.
+                this.fullscreenBtn = document.getElementById('fullscreenBtn');
+
+                // Inicializar atajos de teclado
+                this.setupKeyboardShortcuts();
+            }
+
+            setupKeyboardShortcuts() {
+                this.shortcutsModal = document.getElementById('shortcutsModal');
+                this.shortcutsBtn = document.getElementById('shortcutsBtn');
+                this.shortcutsSidebarBtn = document.getElementById('shortcutsSidebarBtn');
+                this.closeShortcutsBtn = document.getElementById('closeShortcutsBtn');
+
+                if (this.shortcutsBtn) {
+                    this.shortcutsBtn.addEventListener('click', () => this.toggleShortcutsModal());
+                }
+                if (this.shortcutsSidebarBtn) {
+                    this.shortcutsSidebarBtn.addEventListener('click', () => this.toggleShortcutsModal());
+                }
+                if (this.closeShortcutsBtn) {
+                    this.closeShortcutsBtn.addEventListener('click', () => this.hideShortcutsModal());
+                }
+
+                const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+                if (mobileSidebarToggle) {
+                    mobileSidebarToggle.addEventListener('click', () => {
+                        const sidebar = document.querySelector('.sidebar');
+                        if (sidebar) sidebar.classList.toggle('open-mobile');
+                    });
+                }
+
                 document.addEventListener('keydown', (e) => {
-                     // Get the currently focused element on the page.
-                     const activeEl = document.activeElement;
+                    const activeEl = document.activeElement;
+                    const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT');
 
-                     // Check if the space bar was pressed AND if the user is NOT currently typing
-                     // inside an <input> element. This prevents the tap tempo from firing
-                     // when the user is searching for patches or entering a manual command.
-                     if (e.code === 'Space' && activeEl.tagName !== 'INPUT') {
-                         // Prevent the default browser action for the space bar (e.g., scrolling the page).
-                         e.preventDefault(); 
+                    // Escape siempre funciona para cerrar modales o quitar foco
+                    if (e.key === 'Escape') {
+                        if (this.saveModal && this.saveModal.style.display !== 'none') {
+                            this.hideSaveModal();
+                            return;
+                        }
+                        if (this.shortcutsModal && this.shortcutsModal.style.display !== 'none') {
+                            this.hideShortcutsModal();
+                            return;
+                        }
+                        if (this.usbMidiModal && this.usbMidiModal.style.display !== 'none') {
+                            this.usbMidiModal.style.display = 'none';
+                            return;
+                        }
+                        if (isInput) {
+                            activeEl.blur();
+                            return;
+                        }
+                    }
 
-                         const tapButton = document.getElementById('tap-button-7');
-                         if (tapButton) {
-                             // Add a class for a brief visual flash to give user feedback.
-                             tapButton.classList.add('beat-flash');
+                    // Modal de ayuda (?) o F1
+                    if ((e.key === '?' || (e.key === '/' && e.shiftKey) || e.key === 'F1') && !isInput) {
+                        e.preventDefault();
+                        this.toggleShortcutsModal();
+                        return;
+                    }
 
-                             // Programmatically trigger the button's click event.
-                             tapButton.click(); 
+                    // Ctrl+S / Cmd+S: Guardar Preset
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+                        e.preventDefault();
+                        this.showSaveModal();
+                        return;
+                    }
 
-                             // Remove the flash class after a short delay.
-                             setTimeout(() => tapButton.classList.remove('beat-flash'), 100);
-                         }
-                     }
-                 });
-                 // --- END OF ADDED BLOCK ---
+                    // Ctrl+E: Exportar Preset
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 'E')) {
+                        e.preventDefault();
+                        const exportBtn = document.getElementById('exportPresetBtn');
+                        if (exportBtn) exportBtn.click();
+                        return;
+                    }
+
+                    // Ctrl+I: Importar Preset
+                    if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) {
+                        e.preventDefault();
+                        const importBtn = document.getElementById('importPresetBtn');
+                        if (importBtn) importBtn.click();
+                        return;
+                    }
+
+                    // Si el usuario escribe en un input, ignorar atajos simples
+                    if (isInput) return;
+
+                    // Enfocar buscador en '/' o Ctrl+F
+                    if (e.key === '/' || ((e.ctrlKey || e.metaKey) && (e.key === 'f' || e.key === 'F'))) {
+                        e.preventDefault();
+                        if (this.patchSearchInput) this.patchSearchInput.focus();
+                        return;
+                    }
+
+                    // Navegación de Presets: ArrowUp / k (Anterior), ArrowDown / j (Siguiente)
+                    if (e.key === 'ArrowUp' || e.key === 'k' || e.key === 'K') {
+                        e.preventDefault();
+                        this.navigatePresets(-1);
+                        return;
+                    }
+                    if (e.key === 'ArrowDown' || e.key === 'j' || e.key === 'J') {
+                        e.preventDefault();
+                        this.navigatePresets(1);
+                        return;
+                    }
+
+                    // Selección de banco: 1 (Usuario), 2 (Fábrica)
+                    if (e.key === '1') {
+                        e.preventDefault();
+                        if (this.userTabBtn) this.userTabBtn.click();
+                        return;
+                    }
+                    if (e.key === '2') {
+                        e.preventDefault();
+                        if (this.factoryTabBtn) this.factoryTabBtn.click();
+                        return;
+                    }
+
+                    // Atajos de la fila QWERTY (Q W E R T Y U I O) para los 9 módulos de la cadena:
+                    // Tecla simple: Activar / Desactivar (Bypass) el módulo
+                    // Shift + Tecla: Seleccionar / Abrir los controles del módulo
+                    const qwertyRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o'];
+                    const qwertyIndex = qwertyRow.indexOf(e.key.toLowerCase());
+                    if (qwertyIndex !== -1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                        e.preventDefault();
+                        if (e.shiftKey) {
+                            this.selectModule(qwertyIndex);
+                        } else {
+                            const modules = Array.from(document.querySelectorAll('.chain-flow .chain-module'));
+                            if (modules[qwertyIndex]) {
+                                const moduleId = parseInt(modules[qwertyIndex].dataset.moduleId, 10);
+                                this.toggleModuleBypassById(moduleId);
+                            }
+                        }
+                        return;
+                    }
+
+                    // Navegación de módulos en la cadena: ArrowLeft / [ (Anterior), ArrowRight / ] (Siguiente)
+                    if (e.key === 'ArrowLeft' || e.key === '[') {
+                        e.preventDefault();
+                        this.navigateModules(-1);
+                        return;
+                    }
+                    if (e.key === 'ArrowRight' || e.key === ']') {
+                        e.preventDefault();
+                        this.navigateModules(1);
+                        return;
+                    }
+
+                    // Conmutar Bypass del módulo activo: b / B
+                    if (e.key === 'b' || e.key === 'B') {
+                        e.preventDefault();
+                        this.toggleCurrentModuleBypass();
+                        return;
+                    }
+
+                    // Tap Tempo: Espacio
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        const tapButton = document.getElementById('tap-button-7');
+                        if (tapButton) {
+                            tapButton.classList.add('beat-flash');
+                            tapButton.click();
+                            setTimeout(() => tapButton.classList.remove('beat-flash'), 100);
+                        }
+                        return;
+                    }
+                });
+            }
+
+            toggleShortcutsModal() {
+                if (!this.shortcutsModal) return;
+                const isVisible = this.shortcutsModal.style.display !== 'none';
+                this.shortcutsModal.style.display = isVisible ? 'none' : 'block';
+            }
+
+            hideShortcutsModal() {
+                if (this.shortcutsModal) {
+                    this.shortcutsModal.style.display = 'none';
+                }
+            }
+
+            toggleModuleBypassById(moduleId) {
+                const enableToggle = document.getElementById(`module-enable-${moduleId}`);
+                if (enableToggle && !enableToggle.classList.contains('locked')) {
+                    enableToggle.classList.toggle('on');
+                    this.sendModuleState(moduleId, enableToggle.classList.contains('on'));
+                    this.updateModuleStatus(moduleId);
+                }
+            }
+
+            navigatePresets(direction) {
+                if (this.isSyncingState) return;
+                const patches = Array.from(document.querySelectorAll('#patchListContainer .patch-item')).filter(el => el.style.display !== 'none');
+                if (patches.length === 0) return;
+
+                let currentIndex = patches.findIndex(el => el.classList.contains('selected'));
+                let targetIndex;
+                if (currentIndex === -1) {
+                    targetIndex = direction > 0 ? 0 : patches.length - 1;
+                } else {
+                    targetIndex = currentIndex + direction;
+                    if (targetIndex < 0) targetIndex = 0;
+                    if (targetIndex >= patches.length) targetIndex = patches.length - 1;
+                }
+
+                if (targetIndex !== currentIndex && patches[targetIndex]) {
+                    patches[targetIndex].click();
+                    patches[targetIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                }
+            }
+
+            navigateModules(direction) {
+                const modules = Array.from(document.querySelectorAll('.signal-chain .chain-module'));
+                if (modules.length === 0) return;
+
+                let currentIndex = modules.findIndex(m => parseInt(m.dataset.moduleId, 10) === this.activeModuleId);
+                let targetIndex;
+                if (currentIndex === -1) {
+                    targetIndex = 0;
+                } else {
+                    targetIndex = (currentIndex + direction + modules.length) % modules.length;
+                }
+
+                const targetModuleId = parseInt(modules[targetIndex].dataset.moduleId, 10);
+                this.selectModule(targetModuleId);
+            }
+
+            toggleCurrentModuleBypass() {
+                const moduleId = this.activeModuleId !== undefined ? this.activeModuleId : 0;
+                const enableToggle = document.getElementById(`module-enable-${moduleId}`);
+                if (enableToggle && !enableToggle.classList.contains('locked')) {
+                    enableToggle.classList.toggle('on');
+                    this.sendModuleState(moduleId, enableToggle.classList.contains('on'));
+                    this.updateModuleStatus(moduleId);
+                }
             }
 
             updateSliderProgress(sliderElement) {
@@ -11423,7 +12203,7 @@
                 const max = sliderElement.hasAttribute('max') ? parseFloat(sliderElement.max) : 100;
                 const value = parseFloat(sliderElement.value);
 
-                const progressColor = '#ff6b35';
+                const progressColor = 'var(--accent-color, #ff6b35)';
                 const trackColor = '#444';
                 const totalRange = max - min;
 
@@ -11522,8 +12302,47 @@
             }
 
 
+            confirmUnsavedChanges() {
+                return new Promise((resolve) => {
+                    const modal = document.getElementById('unsavedChangesModal');
+                    const confirmBtn = document.getElementById('confirmUnsavedChangesBtn');
+                    const cancelBtn = document.getElementById('cancelUnsavedChangesBtn');
+
+                    if (!modal || !confirmBtn || !cancelBtn) {
+                        resolve(true);
+                        return;
+                    }
+
+                    modal.style.display = 'flex';
+                    this.vibrate(25);
+
+                    const onConfirm = (e) => {
+                        if (e) e.preventDefault();
+                        cleanup();
+                        modal.style.display = 'none';
+                        resolve(true);
+                    };
+
+                    const onCancel = (e) => {
+                        if (e) e.preventDefault();
+                        cleanup();
+                        modal.style.display = 'none';
+                        resolve(false);
+                    };
+
+                    const cleanup = () => {
+                        confirmBtn.removeEventListener('click', onConfirm);
+                        cancelBtn.removeEventListener('click', onCancel);
+                    };
+
+                    confirmBtn.addEventListener('click', onConfirm, { once: true });
+                    cancelBtn.addEventListener('click', onCancel, { once: true });
+                });
+            }
+
             async updatePatchInfo(element, sendCommand = false) {
                 if (!element) return;
+                this.vibrate(15);
 
                 // If the user is clicking a new preset, first check the status of the CURRENT one.
                 const newPatchBaseName = element.dataset.baseName;
@@ -11542,8 +12361,9 @@
                     await new Promise(resolve => setTimeout(resolve, 200)); // Wait 200ms for notification
 
                     // Only show the warning if a preset is modified AND an initial sync is NOT in progress.
-                if (this.isPresetModified && !this.isInitialSyncing) {
-                        if (!confirm("Current preset has been modified and not saved, do you still want to continue?")) {
+                    if (this.isPresetModified && !this.isInitialSyncing) {
+                        const userConfirmed = await this.confirmUnsavedChanges();
+                        if (!userConfirmed) {
                             return; // Stop if user clicks "Cancel"
                         }
                     }
@@ -11571,6 +12391,11 @@
 
                 document.getElementById('patchNumber').textContent = baseName;
                 document.getElementById('patchName').textContent = displayName;
+
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar && window.innerWidth <= 768) {
+                    sidebar.classList.remove('open-mobile');
+                }
 
                 if (!sendCommand) {
                      this.syncCurrentPresetState();
@@ -11721,7 +12546,8 @@
             }
 
             setupEventListeners() {
-                this.connectBtn.addEventListener('click', () => this.connect());
+                if (this.connectUsbBtn) this.connectUsbBtn.addEventListener('click', () => this.connectUSBStart());
+                if (this.connectBleBtn) this.connectBleBtn.addEventListener('click', () => this.connectBLE());
                 this.disconnectBtn.addEventListener('click', () => this.disconnect());
                 this.syncPresetNamesBtn.addEventListener('click', () => this.syncPresetNames());
                 this.syncModulesBtn.addEventListener('click', () => this.syncCurrentPresetState());
@@ -11732,6 +12558,9 @@
                 this.clearLogBtn.addEventListener('click', () => this.clearLog());
                 this.advancedSettingsBtn.addEventListener('click', () => {
                     this.advancedSettingsPanel.classList.toggle('visible');
+                });
+                document.getElementById('closeAdvancedSettingsBtn')?.addEventListener('click', () => {
+                    this.advancedSettingsPanel.classList.remove('visible');
                 });
                 this.moduleElements.forEach(module => {
                     module.addEventListener('click', event => {
@@ -11768,13 +12597,82 @@
                 // USB MIDI modal event listeners
                 this.confirmUsbBtn.addEventListener('click', () => this.confirmUsbDeviceSelection());
                 this.cancelUsbBtn.addEventListener('click', () => this.cancelUsbDeviceSelection());
+
+                if (this.fullscreenBtn) {
+                    this.fullscreenBtn.addEventListener('click', () => {
+                        this.toggleFullscreen();
+                    });
+                }
+                document.addEventListener('fullscreenchange', () => {
+                    this.updateFullscreenBtnText();
+                });
+            }
+
+            vibrate(duration = 15) {
+                if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') {
+                    try {
+                        navigator.vibrate(duration);
+                    } catch (e) {}
+                }
+            }
+
+            toggleFullscreen() {
+                this.vibrate(20);
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen().catch(err => {
+                            this.log(`Error al entrar a pantalla completa: ${err.message}`, 'error');
+                        });
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            }
+
+            updateFullscreenBtnText() {
+                if (this.fullscreenBtn) {
+                    this.fullscreenBtn.innerHTML = document.fullscreenElement ? 
+                        '🖥️ Salir de Pantalla Completa' : '🖥️ Pantalla Completa';
+                }
+            }
+
+            throttleSliderCommand(slider, sendFn, delayMs = 30) {
+                const now = Date.now();
+                this.updateSliderProgress(slider);
+
+                if (!slider._throttleState) {
+                    slider._throttleState = { lastSent: 0, timer: null, pendingFn: null };
+                }
+                const state = slider._throttleState;
+                state.pendingFn = sendFn;
+
+                if (now - state.lastSent >= delayMs) {
+                    state.lastSent = now;
+                    sendFn();
+                    if (state.timer) {
+                        clearTimeout(state.timer);
+                        state.timer = null;
+                    }
+                } else {
+                    if (!state.timer) {
+                        state.timer = setTimeout(() => {
+                            state.lastSent = Date.now();
+                            state.timer = null;
+                            if (state.pendingFn) {
+                                state.pendingFn();
+                                state.pendingFn = null;
+                            }
+                        }, delayMs - (now - state.lastSent));
+                    }
+                }
             }
 
             setupControlListeners() {
                 document.body.addEventListener('input', event => {
                     if (event.target.classList.contains('slider')) {
                         const slider = event.target;
-                        this.updateSliderProgress(slider);
                         const valueDisplay = slider.nextElementSibling;
 
                         if (slider.dataset.globalParam) {
@@ -11787,26 +12685,26 @@
                                 valueDisplay.textContent = value;
                             }
 
-                            clearTimeout(slider.debounceTimer);
-                            slider.debounceTimer = setTimeout(() => {
-                                const command = this.commands.globalCommands?.[paramName]?.[value];
+                            this.throttleSliderCommand(slider, () => {
+                                const val = slider.value;
+                                const command = this.commands.globalCommands?.[paramName]?.[val];
                                 if (command) {
-                                    this.log(`Global Change: ${paramName} = ${value}`, 'info');
+                                    this.log(`Global Change: ${paramName} = ${val}`, 'info');
                                     this.writeCommand(command);
                                 } else {
-                                    this.log(`No global command for ${paramName} = ${value}`, 'error');
+                                    this.log(`No global command for ${paramName} = ${val}`, 'error');
                                 }
-                            }, 50);
+                            }, 30);
                             return; 
                         }
 
                         if (valueDisplay && valueDisplay.classList.contains('slider-value')) {
                             valueDisplay.textContent = slider.value;
                         }
-                        clearTimeout(slider.debounceTimer);
-                        slider.debounceTimer = setTimeout(() => {
+
+                        this.throttleSliderCommand(slider, () => {
                             this.onParameterChange(slider);
-                        }, 50);
+                        }, 30);
                     }
                 });
 
@@ -11961,42 +12859,46 @@
                     moduleTypeElement.textContent = effectDef.name;
                 }
 
-                let content = `<h4 style="color: #ccc;">${effectDef.name}</h4>`;
+                let content = `<h4 style="color: #ccc; margin-bottom: 8px;">${effectDef.name}</h4>`;
                 if (effectDef.descriptionEn) {
                     content += `<p class="effect-description">${effectDef.descriptionEn.replace(/\n/g, '<br>')}</p>`;
                 }
 
-                effectDef.alg.forEach(param => {
-                    const label = `<div class="control-label">${param.name}</div>`;
-                    let controlHtml = '';
-                    const dataAttributes = `data-module-id="${logicalModuleId}" data-fx-id="${fxId}" data-alg-id="${param.algId}"`;
+                if (effectDef.alg && effectDef.alg.length > 0) {
+                    content += '<div class="params-grid">';
+                    effectDef.alg.forEach(param => {
+                        const label = `<div class="control-label">${param.name}</div>`;
+                        let controlHtml = '';
+                        const dataAttributes = `data-module-id="${logicalModuleId}" data-fx-id="${fxId}" data-alg-id="${param.algId}"`;
 
-                    switch (param.widgetType) {
-                        case 0:
-                        case 3:
-                            controlHtml = `
-                                ${label}
-                                <div class="slider-container">
-                                    <input type="range" min="${param.min}" max="${param.max}" value="${param.defaultValue}" step="${param.step || 1}" class="slider" ${dataAttributes}>
-                                    <span class="slider-value">${param.defaultValue}</span>
-                                </div>`;
-                            break;
-                        case 1:
-                            controlHtml = `
-                                ${label}
-                                <div class="toggle-switch ${param.defaultValue ? 'on' : ''}" ${dataAttributes}></div>`;
-                            break;
-                        case 2:
-                            const options = param.options.map((opt, index) =>
-                                `<option value="${index}" ${param.defaultValue == index ? 'selected' : ''}>${opt}</option>`
-                            ).join('');
-                            controlHtml = `
-                                ${label}
-                                <select class="dropdown-select" ${dataAttributes}>${options}</select>`;
-                            break;
-                    }
-                    content += `<div class="control-row">${controlHtml}</div>`;
-                });
+                        switch (param.widgetType) {
+                            case 0:
+                            case 3:
+                                controlHtml = `
+                                    ${label}
+                                    <div class="slider-container">
+                                        <input type="range" min="${param.min}" max="${param.max}" value="${param.defaultValue}" step="${param.step || 1}" class="slider" ${dataAttributes}>
+                                        <span class="slider-value">${param.defaultValue}</span>
+                                    </div>`;
+                                break;
+                            case 1:
+                                controlHtml = `
+                                    ${label}
+                                    <div class="toggle-switch ${param.defaultValue ? 'on' : ''}" ${dataAttributes}></div>`;
+                                break;
+                            case 2:
+                                const options = param.options.map((opt, index) =>
+                                    `<option value="${index}" ${param.defaultValue == index ? 'selected' : ''}>${opt}</option>`
+                                ).join('');
+                                controlHtml = `
+                                    ${label}
+                                    <select class="dropdown-select" ${dataAttributes}>${options}</select>`;
+                                break;
+                        }
+                        content += `<div class="control-row param-card">${controlHtml}</div>`;
+                    });
+                    content += '</div>';
+                }
 
                 // ✨ CHANGE 1: If it's the DELAY module, append the tap tempo HTML to the 'content' string.
                 if (moduleId == '7') {
@@ -12137,9 +13039,16 @@
 
             selectModule(moduleId) {
                 if (this.activeModuleId === moduleId) return;
+                this.vibrate(15);
                 this.activeModuleId = moduleId;
                 this.moduleElements.forEach(m => {
-                    m.classList.toggle('active', parseInt(m.dataset.moduleId, 10) === moduleId);
+                    const isActive = parseInt(m.dataset.moduleId, 10) === moduleId;
+                    m.classList.toggle('active', isActive);
+                    if (isActive) {
+                        try {
+                            m.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        } catch (e) {}
+                    }
                 });
                 this.effectControls.forEach(c => {
                     c.classList.toggle('active', c.id === `module-controls-${moduleId}`);
@@ -12252,25 +13161,20 @@
                 this.updateModuleStatus(moduleId);
             }
 
-            async connect() {
+            async connectUSBStart() {
                 try {
-                    // Step 1: Try to detect USB MIDI devices
                     this.log('Checking for USB MIDI devices...', 'info');
                     const hasUsbDevices = await this.detectAndListUsbMidiDevices();
 
                     if (hasUsbDevices) {
-                        // Show the USB device selection modal
                         this.log('USB MIDI devices found. Showing selection dialog...', 'info');
                         this.showUsbMidiModal();
-                        // Wait for user to make a selection (handled by confirmUsbDeviceSelection/cancelUsbDeviceSelection)
-                        return;
                     } else {
-                        // No USB devices found, proceed directly to BLE
-                        this.log('No USB MIDI devices found. Proceeding with Bluetooth connection...', 'info');
-                        await this.connectBLE();
+                        this.log('No USB MIDI devices found or Web MIDI API unsupported.', 'warn');
+                        alert('No USB MIDI devices found. Please make sure the USB cable is connected.');
                     }
                 } catch (error) {
-                    this.log(`Connection initialization failed: ${error.message}`, 'error');
+                    this.log(`USB MIDI connection error: ${error.message}`, 'error');
                 }
             }
 
@@ -12402,9 +13306,7 @@
 
             cancelUsbDeviceSelection() {
                 this.usbMidiModal.style.display = 'none';
-                this.log('USB device selection cancelled. Falling back to Bluetooth...', 'info');
-                // Proceed with BLE connection
-                this.connectBLE();
+                this.log('USB device selection cancelled by user.', 'info');
             }
 
             async connectUSB(usbDevice) {
@@ -12426,8 +13328,48 @@
                     await this.runInitialSyncSequence();
                 } catch (error) {
                     this.log(`USB MIDI connection failed: ${error.message}`, 'error');
-                    this.log('Falling back to Bluetooth connection...', 'info');
-                    await this.connectBLE();
+                }
+            }
+
+            async tryAutoConnectBLE() {
+                if (!navigator.bluetooth || !navigator.bluetooth.getDevices) return;
+
+                try {
+                    const devices = await navigator.bluetooth.getDevices();
+                    if (!devices || devices.length === 0) return;
+
+                    const targetDevice = devices.find(d => 
+                        d.name === 'Pocket Master BLE' || 
+                        d.name === 'Sonic Master BLE' || 
+                        (d.name && d.name.startsWith('Pocket'))
+                    ) || devices[0];
+
+                    if (targetDevice) {
+                        this.log(`Attempting BLE auto-reconnect to '${targetDevice.name}'...`, 'info');
+                        this.device = targetDevice;
+
+                        this.device.addEventListener('gattserverdisconnected', () => {
+                            this.log('Device disconnected', 'error');
+                            this.isConnected = false;
+                            this.isSyncing = false;
+                            this.updateConnectionUI();
+                        });
+
+                        const server = await this.device.gatt.connect();
+                        const service = await server.getPrimaryService(this.SERVICE_UUID);
+                        this.characteristic = await service.getCharacteristic(this.CHARACTERISTIC_UUID);
+                        await this.characteristic.startNotifications();
+                        this.characteristic.addEventListener('characteristicvaluechanged', (event) => this.handleNotification(event));
+
+                        this.connectionType = 'ble';
+                        this.isConnected = true;
+                        this.updateConnectionUI();
+                        this.log(`✅ Auto-connected via BLE: ${this.device.name}`, 'received');
+
+                        this.runInitialSyncSequence();
+                    }
+                } catch (error) {
+                    this.log(`Auto-connect BLE bypassed: ${error.message}`, 'info');
                 }
             }
 
@@ -12435,7 +13377,12 @@
                 try {
                     this.log('Requesting Bluetooth device...', 'sent');
                     this.device = await navigator.bluetooth.requestDevice({
-                        filters: [{ name: 'Sonic Master BLE' }, { services: [this.SERVICE_UUID] }],
+                        filters: [
+                            { name: 'Pocket Master BLE' },
+                            { name: 'Sonic Master BLE' },
+                            { namePrefix: 'Pocket' },
+                            { services: [this.SERVICE_UUID] }
+                        ],
                         optionalServices: [this.SERVICE_UUID]
                     });
                     this.log(`Found device: ${this.device.name}`, 'received');
@@ -12624,7 +13571,8 @@
                 const isConnected = this.isConnected;
                 const statusLabel = this.connectionType === 'usb' ? 'USB Connected' : this.connectionType === 'ble' ? 'BLE Connected' : 'Disconnected';
 
-                this.connectBtn.disabled = isConnected;
+                if (this.connectUsbBtn) this.connectUsbBtn.disabled = isConnected;
+                if (this.connectBleBtn) this.connectBleBtn.disabled = isConnected;
                 this.disconnectBtn.disabled = !isConnected;
                 this.syncPresetNamesBtn.disabled = !isConnected;
                 this.syncModulesBtn.disabled = !isConnected;
@@ -15066,10 +16014,243 @@
             }
         });
 
+        // ⚡ Setup Quick Access Bar & Swipe Gestures for Mobile
         document.addEventListener('DOMContentLoaded', () => {
             window.bleEditor = new SonicakeBLEEditor();
-            window.bleEditor.startEditor(); // Automatically start the editor on page load
+            window.bleEditor.startEditor();
+
+            const quickPrevBtn = document.getElementById('quickPrevBtn');
+            const quickNextBtn = document.getElementById('quickNextBtn');
+            const quickPatchesBtn = document.getElementById('quickPatchesBtn');
+            const quickBypassBtn = document.getElementById('quickBypassBtn');
+
+            const navigatePreset = (direction) => {
+                const patchItems = Array.from(document.querySelectorAll('#patchListContainer .patch-item'));
+                if (patchItems.length === 0) return;
+                const currentIndex = patchItems.findIndex(item => item.classList.contains('selected'));
+                let targetIndex = currentIndex + direction;
+                if (targetIndex < 0) targetIndex = patchItems.length - 1;
+                if (targetIndex >= patchItems.length) targetIndex = 0;
+                patchItems[targetIndex].click();
+                patchItems[targetIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            };
+
+            if (quickPrevBtn) quickPrevBtn.addEventListener('click', () => navigatePreset(-1));
+            if (quickNextBtn) quickNextBtn.addEventListener('click', () => navigatePreset(1));
+            if (quickPatchesBtn) {
+                quickPatchesBtn.addEventListener('click', () => {
+                    const sidebar = document.querySelector('.sidebar');
+                    if (sidebar) sidebar.classList.toggle('open-mobile');
+                });
+            }
+
+            if (quickBypassBtn) {
+                let isBypassed = false;
+                let previousVol = 75;
+                quickBypassBtn.addEventListener('click', () => {
+                    const volSlider = document.querySelector('input[data-global-param="presetVolume"]');
+                    if (!volSlider) return;
+                    if (!isBypassed) {
+                        previousVol = volSlider.value;
+                        volSlider.value = 0;
+                        volSlider.dispatchEvent(new Event('input', { bubbles: true }));
+                        volSlider.dispatchEvent(new Event('change', { bubbles: true }));
+                        quickBypassBtn.classList.add('bypassed');
+                        quickBypassBtn.textContent = '🔇 MUTED';
+                        isBypassed = true;
+                    } else {
+                        volSlider.value = previousVol;
+                        volSlider.dispatchEvent(new Event('input', { bubbles: true }));
+                        volSlider.dispatchEvent(new Event('change', { bubbles: true }));
+                        quickBypassBtn.classList.remove('bypassed');
+                        quickBypassBtn.textContent = '🔊 BYPASS';
+                        isBypassed = false;
+                    }
+                });
+            }
+
+            // 👆 Swipe Gestures for Mobile Sidebar Drawer
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchend', (e) => {
+                if (!e.changedTouches || e.changedTouches.length !== 1) return;
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                const screenWidth = window.innerWidth;
+
+                const sidebar = document.querySelector('.sidebar');
+                const settings = document.getElementById('advancedSettingsPanel');
+
+                // Swipe right from left edge (start X < 50px) to open Patches sidebar
+                if (touchStartX < 50 && deltaX > 70 && Math.abs(deltaY) < 60) {
+                    if (sidebar) sidebar.classList.add('open-mobile');
+                }
+                // Swipe left anywhere when Patches sidebar is open to close it
+                else if (sidebar && sidebar.classList.contains('open-mobile') && deltaX < -70 && Math.abs(deltaY) < 60) {
+                    sidebar.classList.remove('open-mobile');
+                }
+                // Swipe left from right edge (start X > screenWidth - 50) to open Advanced Settings drawer
+                else if (touchStartX > screenWidth - 50 && deltaX < -70 && Math.abs(deltaY) < 60) {
+                    if (settings) settings.classList.add('visible');
+                }
+                // Swipe right when Advanced Settings is open to close it
+                else if (settings && settings.classList.contains('visible') && deltaX > 70 && Math.abs(deltaY) < 60) {
+                    settings.classList.remove('visible');
+                }
+            }, { passive: true });
+
+            // 🔄 Automatic Backdrop Sync for Left (Patches) and Right (Advanced Settings) Drawers
+            const sidebarEl = document.querySelector('.sidebar');
+            const settingsEl = document.getElementById('advancedSettingsPanel');
+            const backdropEl = document.getElementById('sidebarBackdrop');
+
+            if (backdropEl) {
+                const syncBackdrop = () => {
+                    const isSidebarOpen = sidebarEl && sidebarEl.classList.contains('open-mobile');
+                    const isSettingsOpen = settingsEl && settingsEl.classList.contains('visible');
+                    if (isSidebarOpen || isSettingsOpen) {
+                        backdropEl.style.display = 'block';
+                        setTimeout(() => { backdropEl.style.opacity = '1'; }, 10);
+                    } else {
+                        backdropEl.style.opacity = '0';
+                        setTimeout(() => { backdropEl.style.display = 'none'; }, 300);
+                    }
+                };
+
+                if (sidebarEl) {
+                    const obs1 = new MutationObserver(syncBackdrop);
+                    obs1.observe(sidebarEl, { attributes: true, attributeFilter: ['class'] });
+                }
+                if (settingsEl) {
+                    const obs2 = new MutationObserver(syncBackdrop);
+                    obs2.observe(settingsEl, { attributes: true, attributeFilter: ['class'] });
+                }
+
+                backdropEl.addEventListener('click', () => {
+                    if (sidebarEl) sidebarEl.classList.remove('open-mobile');
+                    if (settingsEl) settingsEl.classList.remove('visible');
+                });
+            }
+
+            // 🎯 Click-Outside Listener for Advanced Settings Panel
+            document.addEventListener('click', (e) => {
+                const settingsPanel = document.getElementById('advancedSettingsPanel');
+                const settingsBtn = document.getElementById('advancedSettingsBtn');
+                if (settingsPanel && settingsPanel.classList.contains('visible')) {
+                    if (!settingsPanel.contains(e.target) && settingsBtn && !settingsBtn.contains(e.target)) {
+                        settingsPanel.classList.remove('visible');
+                    }
+                }
+            });
+
+            // 🎨 RGB Accent Theme Color Manager
+            function applyThemeColor(hexColor) {
+                if (!hexColor || !/^#[0-9A-Fa-f]{6}$/.test(hexColor)) hexColor = '#ff6b35';
+
+                const r = parseInt(hexColor.slice(1, 3), 16);
+                const g = parseInt(hexColor.slice(3, 5), 16);
+                const b = parseInt(hexColor.slice(5, 7), 16);
+
+                const secR = Math.min(255, Math.floor(r * 1.15));
+                const secG = Math.min(255, Math.floor(g * 1.15));
+                const secB = Math.min(255, Math.floor(b * 1.15));
+                const secHex = `#${secR.toString(16).padStart(2, '0')}${secG.toString(16).padStart(2, '0')}${secB.toString(16).padStart(2, '0')}`;
+
+                const darkR = Math.max(0, Math.floor(r * 0.85));
+                const darkG = Math.max(0, Math.floor(g * 0.85));
+                const darkB = Math.max(0, Math.floor(b * 0.85));
+                const darkHex = `#${darkR.toString(16).padStart(2, '0')}${darkG.toString(16).padStart(2, '0')}${darkB.toString(16).padStart(2, '0')}`;
+
+                document.documentElement.style.setProperty('--accent-color', hexColor);
+                document.documentElement.style.setProperty('--accent-color-secondary', secHex);
+                document.documentElement.style.setProperty('--accent-color-dark', darkHex);
+
+                try {
+                    localStorage.setItem('pocketedit_theme_color', hexColor);
+                } catch (e) {}
+
+                const picker = document.getElementById('themeColorPicker');
+                const valText = document.getElementById('themeColorVal');
+                if (picker && picker.value.toLowerCase() !== hexColor.toLowerCase()) picker.value = hexColor;
+                if (valText) valText.textContent = hexColor.toUpperCase();
+
+                // Refresh all slider progress colors
+                const editor = window.bleEditor || window.app;
+                document.querySelectorAll('.slider').forEach(slider => {
+                    if (editor && typeof editor.updateSliderProgress === 'function') {
+                        editor.updateSliderProgress(slider);
+                    }
+                });
+            }
+
+            const savedColor = (function() {
+                try { return localStorage.getItem('pocketedit_theme_color'); } catch (e) { return null; }
+            })() || '#ff6b35';
+            applyThemeColor(savedColor);
+
+            const themeColorPicker = document.getElementById('themeColorPicker');
+            if (themeColorPicker) {
+                themeColorPicker.addEventListener('input', (e) => applyThemeColor(e.target.value));
+                themeColorPicker.addEventListener('change', (e) => applyThemeColor(e.target.value));
+            }
+            const resetThemeColorBtn = document.getElementById('resetThemeColorBtn');
+            if (resetThemeColorBtn) {
+                resetThemeColorBtn.addEventListener('click', () => applyThemeColor('#ff6b35'));
+            }
+
+            // 💡 Screen Wake Lock API (Keep mobile screen ON during performance/use)
+            let wakeLock = null;
+
+            async function requestWakeLock() {
+                if ('wakeLock' in navigator) {
+                    try {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                        console.log('💡 Screen Wake Lock ACTIVE: Screen will stay ON');
+                        wakeLock.addEventListener('release', () => {
+                            console.log('💡 Screen Wake Lock RELEASED');
+                            wakeLock = null;
+                        });
+                    } catch (err) {
+                        console.warn(`Screen Wake Lock request failed: ${err.name}, ${err.message}`);
+                    }
+                }
+            }
+
+            // Request wake lock on first user interaction (touch/click)
+            const enableWakeLockOnInteraction = () => {
+                requestWakeLock();
+                document.removeEventListener('touchstart', enableWakeLockOnInteraction);
+                document.removeEventListener('click', enableWakeLockOnInteraction);
+            };
+
+            document.addEventListener('touchstart', enableWakeLockOnInteraction, { passive: true });
+            document.addEventListener('click', enableWakeLockOnInteraction);
+
+            // Automatically re-acquire wake lock if tab returns to foreground
+            document.addEventListener('visibilitychange', async () => {
+                if (document.visibilityState === 'visible' && !wakeLock) {
+                    await requestWakeLock();
+                }
+            });
         });
     </script>
+
+    <!-- ⚡ Quick Access Bar for Mobile Live Performance -->
+    <div id="quickAccessBar" class="quick-access-bar">
+        <button id="quickPrevBtn" class="quick-btn" title="Previous Preset">◀ PREV</button>
+        <button id="quickPatchesBtn" class="quick-btn quick-patches-btn" title="Patch List">📋 PATCHES</button>
+        <button id="quickBypassBtn" class="quick-btn quick-bypass-btn" title="Bypass Preset Volume">🔊 BYPASS</button>
+        <button id="quickNextBtn" class="quick-btn" title="Next Preset">NEXT ▶</button>
+    </div>
 </body>
 </html>
