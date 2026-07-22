@@ -733,39 +733,43 @@
             min-width: fit-content;
         }
 
-        /* New container for the patch volume slider */
+        /* Container for the patch volume slider inside sidebar */
         .patch-volume-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px 20px;
+            margin-top: 10px;
+            width: 100%;
         }
 
         .patch-volume-module {
-            width: 50%;
-            max-width: 500px;
-            height: 50px;
-            background: linear-gradient(145deg, #404040, #303030);
-            border: 2px solid #555;
-            border-radius: 8px;
+            width: 100%;
+            background: linear-gradient(145deg, #353535, #252525);
+            border: 1px solid #444;
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
             position: relative;
-            padding: 10px;
-            gap: 8px;
+            padding: 8px;
+            gap: 4px;
+            box-sizing: border-box;
         }
 
         .patch-volume-module .module-name {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: bold;
             color: #ccc;
+            letter-spacing: 0.5px;
         }
 
         .patch-volume-module .slider-container {
             width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         /* Add these new styles to your existing <style> block */
         .settings-btn {
@@ -1355,10 +1359,6 @@
             padding: 0 10px;
         }
 
-        .patch-volume-container {
-            display: none;
-        }
-
         .signal-chain {
             width: 340px;
             flex-shrink: 0;
@@ -1499,9 +1499,27 @@
                     <div id="statusDot" class="status-dot"></div>
                     <span id="statusText">Disconnected</span>
                 </div>
-                <button id="connectUsbBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, #ff6b35, #e05520);">🔌 Conectar USB (MIDI)</button>
-                <button id="connectBleBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, #0077ff, #0055cc);">📡 Conectar Bluetooth</button>
-                <button id="disconnectBtn" class="btn" disabled style="margin-bottom: 5px;">Desconectar</button>
+                <button id="connectUsbBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, var(--accent-color, #ff6b35), var(--accent-color-dark, #e05520)); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M15 7v-2h-2v-3h-2v3h-2v2h2v4h-3.17c-.42-1.16-1.52-2-2.83-2-1.66 0-3 1.34-3 3s1.34 3 3 3c1.31 0 2.41-.84 2.83-2h3.17v4.17c-.84.42-1.42 1.25-1.42 2.23 0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5c0-.98-.58-1.81-1.42-2.23v-8.17h2v-2h-2zm-8 7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm8 7c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z"/></svg>
+                    Connect USB (MIDI)
+                </button>
+                <button id="connectBleBtn" class="btn btn-primary" style="margin-bottom: 5px; background: linear-gradient(145deg, #0077ff, #0055cc); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg>
+                    Connect Bluetooth
+                </button>
+                <button id="disconnectBtn" class="btn" disabled style="margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Disconnect
+                </button>
+                <div class="patch-volume-container">
+                    <div class="patch-volume-module">
+                        <div class="module-name">🔊 Patch Vol</div>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="75" class="slider" data-global-param="presetVolume">
+                            <span class="slider-value">75</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="patch-list">
@@ -1529,16 +1547,6 @@
                 <div style="display: flex; align-items: center;">
                     <button id="shortcutsBtn" class="settings-btn" title="Keyboard Shortcuts (?)" style="margin-right: 6px;">⌨️</button>
                     <button id="advancedSettingsBtn" class="settings-btn">⚙️</button>
-                </div>
-            </div>
-
-            <div class="patch-volume-container">
-                <div class="patch-volume-module">
-                    <div class="module-name">🔊 Patch Vol</div>
-                    <div class="slider-container">
-                        <input type="range" min="0" max="100" value="75" class="slider" data-global-param="presetVolume">
-                        <span class="slider-value">75</span>
-                    </div>
                 </div>
             </div>
 
