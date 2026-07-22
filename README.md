@@ -11,7 +11,6 @@ Written purely in HTML, CSS, and JavaScript, **PocketEdit** runs directly in you
 ## **🌐 Online Access**
 
 You can access PocketEdit online anytime:  
-👉 **[https://suckyble.github.io/PocketEdit/](https://suckyble.github.io/PocketEdit/)**
 
 Alternatively, you can clone or download this repository and double-click `index.html` to run it locally offline.
 
