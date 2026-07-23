@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pocket Edit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent-color: #ff6b35;
@@ -12,14 +15,14 @@
       --accent-color-dark: #d9531e;
     }
 
-    * {
+    *, body, button, input, select, textarea {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
       color: #e0e0e0;
       min-height: 100vh;
@@ -41,12 +44,18 @@
     }
 
     .sidebar-header {
-      padding: 15px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: linear-gradient(90deg, var(--accent-color, #ff6b35), var(--accent-color-secondary, #f7931e));
       color: white;
       font-weight: bold;
+      font-size: 16px;
+      letter-spacing: 1px;
       text-align: center;
       border-bottom: 1px solid #444;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
 
     .connection-panel {
@@ -202,8 +211,15 @@
       border-bottom: 1px solid #444;
       display: flex;
       align-items: center;
-      padding: 0 20px;
       justify-content: space-between;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .patch-info {
@@ -229,44 +245,55 @@
     .top-bar-patch-nav {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-left: 10px;
+      gap: 8px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .top-nav-btn {
-      background: linear-gradient(145deg, #404040, #2d2d2d);
-      border: 1px solid #555;
+      background: linear-gradient(145deg, #444444, #2c2c2c);
+      border: 1px solid #555555;
       color: #e0e0e0;
-      padding: 4px 10px;
-      border-radius: 5px;
-      font-size: 12px;
-      font-weight: 600;
+      padding: 0 16px;
+      height: 38px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 6px;
       transition: all 0.2s ease;
       user-select: none;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .top-nav-btn:hover {
-      background: linear-gradient(145deg, #505050, #383838);
-      border-color: #777;
-      color: #fff;
+      background: linear-gradient(145deg, #555555, #3a3a3a);
+      border-color: #777777;
+      color: #ffffff;
       transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     }
 
     .top-nav-btn:active {
       transform: translateY(0);
-      background: #222;
+      background: #222222;
     }
 
     .top-nav-btn.bypassed {
       background: linear-gradient(145deg, #cc2222, #991111) !important;
       border-color: #ff4444 !important;
       color: #ffffff !important;
+    }
+
+    @media (max-width: 800px) {
+      .top-bar-center {
+        position: static;
+        transform: none;
+      }
     }
 
     @media (max-width: 600px) and (orientation: portrait) {
@@ -566,38 +593,49 @@
       text-transform: uppercase;
     }
 
-    .toggle-switch {
-      width: 40px;
-      height: 20px;
-      background: #333;
-      border-radius: 10px;
+    .toggle-switch,
+    .custom-setting-toggle {
+      width: 44px;
+      height: 22px;
+      background: #2a2a2a;
+      border: 1px solid #555;
+      border-radius: 12px;
       position: relative;
       cursor: pointer;
       flex-shrink: 0;
-      transition: background-color 0.2s ease;
+      transition: all 0.2s ease;
+      display: inline-block;
+      box-sizing: border-box;
     }
 
-    .toggle-switch.on {
-      background: var(--accent-color, #ff6b35);
+    .toggle-switch.on,
+    .custom-setting-toggle.on {
+      background: var(--accent-color, #ff6b35) !important;
+      border-color: var(--accent-color, #ff6b35) !important;
+      box-shadow: 0 0 8px rgba(255, 107, 53, 0.3);
     }
 
-    .toggle-switch::after {
+    .toggle-switch::after,
+    .custom-setting-toggle .toggle-knob {
       content: '';
       position: absolute;
       top: 2px;
       left: 3px;
-      width: 8px;
+      width: 16px;
       height: 16px;
-      background: white;
-      border-radius: 3px;
+      background: #ffffff;
+      border-radius: 50%;
       transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
-    .toggle-switch.on::after {
-      transform: translateX(26px);
+    .toggle-switch.on::after,
+    .custom-setting-toggle.on .toggle-knob {
+      transform: translateX(20px);
     }
 
-    .toggle-switch.locked {
+    .toggle-switch.locked,
+    .custom-setting-toggle.locked {
       cursor: not-allowed;
       opacity: 0.7;
     }
@@ -1662,25 +1700,22 @@
     <div class="main-content">
       <div id="editor-container" style="display: none; height: 100%; flex-direction: column; flex: 1;">
         <div class="top-bar">
-          <button id="mobileSidebarToggle" class="mobile-sidebar-toggle-btn" title="Show/Hide Patches & Connection">📋
-            Patches</button>
-          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <div class="top-bar-left">
+            <button id="mobileSidebarToggle" class="mobile-sidebar-toggle-btn" title="Show/Hide Patches & Connection">📋 Patches</button>
             <div class="patch-info">
               <div class="patch-number" id="patchNumber"></div>
               <div class="patch-name" id="patchName"></div>
             </div>
-
-            <div class="top-bar-patch-nav">
-              <button id="topPrevPatchBtn" class="top-nav-btn" title="Previous Preset">◀ PREV</button>
-              <button id="topBypassBtn" class="top-nav-btn top-bypass-btn" title="Bypass Preset Volume">🔊
-                BYPASS</button>
-              <button id="topNextPatchBtn" class="top-nav-btn" title="Next Preset">NEXT ▶</button>
-            </div>
           </div>
 
-          <div style="display: flex; align-items: center;">
-            <button id="shortcutsBtn" class="settings-btn" title="Keyboard Shortcuts (?)"
-              style="margin-right: 6px;">⌨️</button>
+          <div class="top-bar-patch-nav">
+            <button id="topPrevPatchBtn" class="top-nav-btn" title="Previous Preset">◀ PREV</button>
+            <button id="topBypassBtn" class="top-nav-btn top-bypass-btn" title="Bypass Preset Volume">🔊 BYPASS</button>
+            <button id="topNextPatchBtn" class="top-nav-btn" title="Next Preset">NEXT ▶</button>
+          </div>
+
+          <div class="top-bar-right" style="display: flex; align-items: center;">
+            <button id="shortcutsBtn" class="settings-btn" title="Keyboard Shortcuts (?)" style="margin-right: 6px;">⌨️</button>
             <button id="advancedSettingsBtn" class="settings-btn">⚙️</button>
           </div>
         </div>
@@ -2025,10 +2060,21 @@
         <input type="color" id="themeColorPicker" value="#ff6b35"
           style="width: 38px; height: 28px; border: 1px solid #555; border-radius: 4px; cursor: pointer; background: transparent; padding: 0;">
         <span id="themeColorVal"
-          style="font-size: 11px; font-family: monospace; color: #aaa; min-width: 55px;">#FF6B35</span>
+          style="font-size: 11px; color: #aaa; min-width: 55px;">#FF6B35</span>
         <button id="resetThemeColorBtn" class="btn"
           style="width: auto; padding: 2px 8px; font-size: 10px; margin: 0; background: #333; border: 1px solid #555; color: #eee;"
           title="Reset to default orange">Reset</button>
+      </div>
+    </div>
+
+    <!-- ⚡ Auto-discard Unsaved Changes Toggle -->
+    <div class="control-row" style="margin-top: 15px; border-top: 1px dashed #444; padding-top: 15px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <div class="control-label" style="font-weight: bold; color: #eee; font-size: 12px;">Direct Preset Switch</div>
+        <div style="font-size: 10px; color: #aaa;">Disable prompt & discard unsaved changes on preset switch</div>
+      </div>
+      <div class="custom-setting-toggle" id="autoDiscardUnsavedToggle" title="Enable to switch presets directly without saving or displaying prompts">
+        <div class="toggle-knob"></div>
       </div>
     </div>
 
@@ -12650,8 +12696,8 @@
           // If the flag is true after a brief wait, we prompt the user.
           await new Promise(resolve => setTimeout(resolve, 200)); // Wait 200ms for notification
 
-          // Only show the warning if a preset is modified AND an initial sync is NOT in progress.
-          if (this.isPresetModified && !this.isInitialSyncing) {
+          // Only show the warning if a preset is modified AND an initial sync is NOT in progress AND auto-discard is false.
+          if (this.isPresetModified && !this.isInitialSyncing && !this.autoDiscardUnsaved) {
             const userConfirmed = await this.confirmUnsavedChanges();
             if (!userConfirmed) {
               return; // Stop if user clicks "Cancel"
@@ -12852,6 +12898,24 @@
         document.getElementById('closeAdvancedSettingsBtn')?.addEventListener('click', () => {
           this.advancedSettingsPanel.classList.remove('visible');
         });
+
+        const autoDiscardToggle = document.getElementById('autoDiscardUnsavedToggle');
+        this.autoDiscardUnsaved = (localStorage.getItem('pocketedit_auto_discard_unsaved') === 'true');
+        if (autoDiscardToggle) {
+          if (this.autoDiscardUnsaved) {
+            autoDiscardToggle.classList.add('on');
+          } else {
+            autoDiscardToggle.classList.remove('on');
+          }
+          autoDiscardToggle.addEventListener('click', () => {
+            autoDiscardToggle.classList.toggle('on');
+            this.autoDiscardUnsaved = autoDiscardToggle.classList.contains('on');
+            try {
+              localStorage.setItem('pocketedit_auto_discard_unsaved', this.autoDiscardUnsaved ? 'true' : 'false');
+            } catch (e) {}
+            this.log(`Direct Preset Switch: ${this.autoDiscardUnsaved ? 'ENABLED (no warnings)' : 'DISABLED (with warnings)'}`, 'info');
+          });
+        }
         this.moduleElements.forEach(module => {
           module.addEventListener('click', event => {
             if (event.target.closest('.module-status')) {
